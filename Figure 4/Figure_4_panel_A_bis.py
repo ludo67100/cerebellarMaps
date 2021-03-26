@@ -13,7 +13,7 @@ inputDir = 'E:/03_FORMATED_DATA/For Paper/EPHYS'
 saveDir =  'E:/code_output_test'
 #-------------------------------------------------------------------------------
 
-dataSource = '{}/Development_Dataset'.format(inputDir)
+dataSource = '{}/Adaptive_Dataset'.format(inputDir)
 
 import matplotlib
 matplotlib.rcParams['pdf.fonttype'] = 42
