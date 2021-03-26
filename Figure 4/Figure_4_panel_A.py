@@ -19,7 +19,15 @@ from scipy import stats
 import sys
 from scipy.stats import median_absolute_deviation as MAD
 
+#--------------FILL HERE INPUT/OUTPUT-------------------------------------------
+#Input folder : please put path up to EPHYS dataset (e.g., 'C/USER/FOLDER/EPHYS')
+inputDir = 'E:/03_FORMATED_DATA/For Paper/EPHYS'
 
+#Savedir  : please specify a path where to save the output
+saveDir =  'E:/code_output_test'
+#-------------------------------------------------------------------------------
+
+dataSource = '{}/Development_Dataset'.format(inputDir)
 
 
 groups = ['WT','ENR1','ENR2','LC','LS','EC','ES']
@@ -28,14 +36,6 @@ pal = ['skyblue','limegreen','green','lightcoral','grey','orange','purple']
 
 #Pairs to analyse for stats
 pairs= [("WT", "ENR1"), ("WT", "ENR2"),("WT", "LC"), ("WT", "LS"), ("WT", "EC"),("WT", "ES")]
-
-
-#Input folder
-dataSource = 'E:/000_PAPER/Amplitude_Analysis/Sigma'
-
-#Savedir  
-saveDir =  'E:/000_PAPER/Amplitude_Analysis/Sigma/09_AMPLITUDE_DISTRIBUTIONS'
-
 
 #Redirect console output to a txt file instead of console 
 sys.stdout = open('{}/Syn_Amp_Statistics.txt'.format(saveDir),'w')
