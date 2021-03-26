@@ -6,6 +6,16 @@ Created on Wed Jul 22 15:55:49 2020
 """
 
 
+#--------------FILL HERE INPUT/OUTPUT-------------------------------------------
+#Input folder : please put path up to EPHYS dataset (e.g., 'C/USER/FOLDER/EPHYS')
+inputDir = 'E:/03_FORMATED_DATA/For Paper/EPHYS'
+
+#Savedir  : please specify a path where to save the output
+saveDir =  'E:/code_output_test'
+#-------------------------------------------------------------------------------
+
+dataSource = '{}/Adaptive_Dataset'.format(inputDir)
+
 import matplotlib
 matplotlib.rcParams['pdf.fonttype'] = 42
 import numpy as np
@@ -23,11 +33,6 @@ groups = ['WT','ENR1','ENR2','LC','LS','EC','ES']
 colors = ['skyblue','limegreen','green','lightcoral','black','orange','purple']
 pal = ['skyblue','limegreen','green','lightcoral','grey','orange','purple']
 
-
-#General directory to find the data
-dataSource = 'E:/000_PAPER/Amplitude_Analysis/Sigma'
-
-saveDir = 'E:/000_PAPER/Amplitude_Analysis/Sigma/03_SYNAPTIC/01_STATS'
 
 #Target file type
 fileType = 'Amp_2D_OK.csv'
