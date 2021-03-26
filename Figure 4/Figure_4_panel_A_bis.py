@@ -5,6 +5,16 @@ Created on Wed Apr  8 11:33:53 2020
 @author: ludov
 """
 
+#--------------FILL HERE INPUT/OUTPUT-------------------------------------------
+#Input folder : please put path up to EPHYS dataset (e.g., 'C/USER/FOLDER/EPHYS')
+inputDir = 'E:/03_FORMATED_DATA/For Paper/EPHYS'
+
+#Savedir  : please specify a path where to save the output
+saveDir =  'E:/code_output_test'
+#-------------------------------------------------------------------------------
+
+dataSource = '{}/Development_Dataset'.format(inputDir)
+
 import matplotlib
 matplotlib.rcParams['pdf.fonttype'] = 42
 import numpy as np
@@ -25,12 +35,6 @@ pal = ['skyblue','limegreen','green','lightcoral','grey','orange','purple']
 #Pairs to analyse for stats
 pairs= [("WT", "ENR1"), ("WT", "ENR2"),("WT", "LC"), ("WT", "LS"), ("WT", "EC"),("WT", "ES")]
 
-
-#Input folder
-dataSource = 'E:/000_PAPER/Amplitude_Analysis/Sigma'
-
-#Savedir 
-saveDir =  'E:/000_PAPER/Amplitude_Analysis/Sigma/03_SYNAPTIC/01_STATS'
 
 #Target file type
 fileType = 'Amp_2D_OK.csv'
