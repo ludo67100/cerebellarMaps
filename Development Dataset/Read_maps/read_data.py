@@ -14,7 +14,7 @@ import pandas as pd
 
 
 # Read the raw data from here
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
+data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Development_Dataset/"
 # Store the processed data here
 data_target_dir = "../../data/"
 # Target directory for the figures
@@ -42,7 +42,7 @@ B_ipis : 125 to 285
 data = pd.DataFrame()
 
 # All developmental stages - P9P10, P12P13, P14P18, P30P40
-days = os.listdir(data_dir+development)
+days = os.listdir(data_dir)
 
 day_list = []
 rat_num_list = []
@@ -52,7 +52,8 @@ data_2d = dict()
 
 
 for dy in days:
-    all_cells = os.listdir(data_dir+development+"/"+dy)
+    #all_cells = os.listdir(data_dir+development+"/"+dy)
+    all_cells = os.listdir(data_dir+"/"+dy)
     cell_no = []
     rat_no = []
     data_2d[dy] = dict()
@@ -68,16 +69,16 @@ for dy in days:
                 data_2d[dy][rn] = dict()
                 data_2d[dy][rn]["name"] = [] 
 
-            if os.path.exists(data_dir+development+"/"+dy+"/"+cell+"/"+cell+"_Amp_zscore_2D_OK.csv"):
+            if os.path.exists(data_dir+"/"+dy+"/"+cell+"/"+cell+"_Amp_zscore_2D_OK.csv"):
                 if cn not in list(data_2d[dy][rn].keys()):
                     data_2d[dy][rn][cn] = dict()
 
                 # Read the zscored amplitude map
-                data_2d[dy][rn][cn]["map"] = pd.read_csv(data_dir+development+"/"+dy+"/"+cell+"/"+cell+"_Amp_zscore_2D_OK.csv",header=None)      # Assumption is if rat number is same, at least the cell number is different, that is no duplicate folders for the same rat num and cell number
-                data_2d[dy][rn][cn]["map_nz"] = pd.read_csv(data_dir+development+"/"+dy+"/"+cell+"/"+cell+"_Amp_2D_OK.csv",header=None)      # Assumption is if rat number is same, at least the cell number is different, that is no duplicate folders for the same rat num and cell number
+                data_2d[dy][rn][cn]["map"] = pd.read_csv(data_dir+"/"+dy+"/"+cell+"/"+cell+"_Amp_zscore_2D_OK.csv",header=None)      # Assumption is if rat number is same, at least the cell number is different, that is no duplicate folders for the same rat num and cell number
+                data_2d[dy][rn][cn]["map_nz"] = pd.read_csv(data_dir+"/"+dy+"/"+cell+"/"+cell+"_Amp_2D_OK.csv",header=None)      # Assumption is if rat number is same, at least the cell number is different, that is no duplicate folders for the same rat num and cell number
 
                 # Read the positions at which the amplitudes were measured
-                pos_centered = pd.read_csv(data_dir+development+"/"+dy+"/"+cell+"/"+cell+"_Positions_cp_centered_OK.csv",header=None)
+                pos_centered = pd.read_csv(data_dir+"/"+dy+"/"+cell+"/"+cell+"_Positions_cp_centered_OK.csv",header=None)
 
                 # Mark the positions that fall on the contralateral side
                 ind_contra = np.where(pos_centered<0)[0]
