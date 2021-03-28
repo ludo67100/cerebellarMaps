@@ -18,8 +18,6 @@ import sys
 import seaborn as sns
 import scipy.stats as sp_stats
 
-# Raw data here
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
 
 data_target_dir = "../data/"
 fig_target_dir = "../figs/"
