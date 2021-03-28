@@ -21,14 +21,14 @@ sys.path.append("../../common/")
 import graph_prop_funcs_analyze as graph_anal
 
 # Raw data here
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
+data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Adaptive_Dataset/"
 # Store data after preprocessing here
 data_target_dir = "../../data/"
 fig_target_dir = "../../figs/"
 
 electrophys = "ELECTROPHY"
 # All subtypes - LC,LS,EC,ES,Ct,S-L/TR
-subtypes = os.listdir(data_dir+electrophys)
+subtypes = os.listdir(data_dir)
 data_2d = pickle.load(open(data_target_dir+"data_2d_maps.pickle","rb"))
 data = pd.read_csv(data_target_dir+"meta_data.csv")
 cov_2d_dict = deepcopy(data_2d)
