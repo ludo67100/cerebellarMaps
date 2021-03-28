@@ -16,7 +16,8 @@ import seaborn as sns
 
 
 # Raw data
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
+data_dir = "../../COMPLETE_DATASET/For\\ Paper/BEHAVIOR/ENRICHMENT/"
+
 
 data_target_dir = "../data/"
 fig_target_dir = "../figs/"
@@ -26,7 +27,7 @@ behavior = "BEHAVIOR"
 
 sub_ipsi_contra = sys.argv[1]
 
-behavior_enrichment = pd.read_excel(data_dir+behavior+"/"+"Enrichment.xlsx")
+behavior_enrichment = pd.read_excel(data_dir+"/"+"Enrichment.xlsx")
 gammas = np.round(np.arange(0.0,1.5,0.17),2)
 
 day_label_order = list(behavior_enrichment.keys())[1:]
