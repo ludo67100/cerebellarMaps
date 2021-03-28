@@ -41,7 +41,7 @@ elif data_type == "development":
     development = "DEVELOPMENT"
     # Raw data
     data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Development_Dataset/"
-    subtypes = os.listdir(data_dir+development) # Just the name of the variable is subtypes, its actually days
+    subtypes = os.listdir(data_dir) # Just the name of the variable is subtypes, its actually days
     data_2d = pickle.load(open(data_target_dir+"data_2d_maps_days.pickle","rb"))
     data = pd.read_csv(data_target_dir+"meta_data_days.csv")
 
