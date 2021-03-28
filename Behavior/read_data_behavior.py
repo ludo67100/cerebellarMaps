@@ -15,7 +15,7 @@ import sys
 
 
 # Raw data
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
+data_dir = "../../COMPLETE_DATASET/For\\ Paper/BEHAVIOR/BALANCE/"
 # 
 data_target_dir = "../data/"
 fig_target_dir = "../figs/"
@@ -39,7 +39,7 @@ y_features = list(behavior_features.keys())
 for k in y_features:
     temp_behav[k] = []
                                                                                                                  
-behavior_catwalk = pd.read_excel(data_dir+behavior+"/"+"Catwalk.xlsx")
+behavior_catwalk = pd.read_excel(data_dir+"/"+"Catwalk_Norm_Profiles_Cuff_Sham_Ctrl.xlsx")
 
 animals_names = [x.split('_')[1] for x in list(behavior_catwalk["mouse"]) ]
 temp_subtypes = [x.split('_')[0] for x in list(behavior_catwalk["mouse"]) ]
@@ -75,7 +75,7 @@ for i,an in enumerate(animals_names):
     auc_late = np.sum(np.array((catwalk_mouse[catwalk_mouse.keys()[4:8]])))
     auc_global = np.sum(np.array(np.abs(catwalk_mouse[catwalk_mouse.keys()[2:8]]))) # Total plasticity irrespective of direction
     post_op2 = np.unique(catwalk_mouse["post_op_2"]) # Absolute postop2
-    post_op2_rel = (np.unique(catwalk_mouse["post_op_2"]) - baseline)/baseline  # Relative to baseline - even after zscoring does not give a good clustering 
+    post_op2_rel = (np.unique(catwalk_mouse["post_op_2"]) - baseline)/baseline   
     post_op33 = np.unique(catwalk_mouse["post_op_33"])
     post_op33_rel = (np.unique(catwalk_mouse["post_op_33"]) - baseline)/baseline
     post_op14 = np.unique(catwalk_mouse["post_op_14"]) # Absolute postop14
