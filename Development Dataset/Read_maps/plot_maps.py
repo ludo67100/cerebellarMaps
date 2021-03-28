@@ -13,7 +13,8 @@ import pandas as pd
 
 
 # Read the raw data from here
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
+data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Development_Dataset/"
+
 # Store the processed data here
 data_target_dir = "../../data/"
 # Target directory for the figures
@@ -28,7 +29,7 @@ zone_lims = [(-233,-133),(-133,-108),(-108,-58),(-58,0),(0,50),(50,100),(100,125
 
 
 # All developmental stages - P9P10, P12P13, P14P18, P30P40
-days = os.listdir(data_dir+development)
+days = os.listdir(data_dir)
 data = pd.read_csv(data_target_dir+"meta_data_days.csv")
 data_2d = pickle.load(open(data_target_dir+"data_2d_maps_days.pickle","rb"))
 
