@@ -10,6 +10,9 @@ Each script was tested and built with an IPython console from Spyder (python 3.6
 -seaborn
 -statannot
 -scipy
+-statsmodels
+-sklearn
+-bct
 
 # Dataset
 Please download and unzip COMPLETE_DATASET.zip file in the main branch. This folder contains pre-processed synaptic maps, balance profiles and locomotor performances in the running wheel. 
