@@ -23,7 +23,7 @@ from sklearn.model_selection import cross_val_score, StratifiedKFold, GridSearch
 sys.path.append("../common/")
 import analyze as anal
 # Raw data
-data_dir = "/home/bahuguna/Work/Isope_data/"
+data_dir = "../../COMPLETE_DATASET/For\\ Paper/BEHAVIOR/ENRICHMENT/"
 
 data_target_dir = "../data/"
 #data_target_dir = "/home/bahuguna/Work/Isope_data/"
