@@ -62,7 +62,7 @@ B_ipis : 125 to 285
 
 mat_type = "norm"
 # 5 different seeds to calculate graph properties 
-for t in np.arange(0,5):
+for t in np.arange(0,20):
 
     seed = np.random.randint(0,9999999)
     print(seed)
