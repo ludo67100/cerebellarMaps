@@ -24,7 +24,6 @@ from sklearn.ensemble import RandomForestClassifier
 
 sys.path.append("../common/")
 import analyze as anal
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
 
 data_target_dir = "../data/"
 fig_target_dir = "../figs/"

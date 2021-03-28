@@ -30,8 +30,6 @@ matplotlib.rcParams['pdf.fonttype'] = 42
 sys.path.append("../common/")
 import analyze as anal
 
-# Raw data
-data_dir = "/home/bahuguna/Work/Isope_data/Isope_data_cerebellar_maps/"
 # Processed data 
 data_target_dir = "../data/"
 fig_target_dir = "../figs/"
