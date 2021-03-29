@@ -7,6 +7,8 @@ DATA_TARGET_DIR = "data/"
 FIG_TARGET_DIR = "figs/"
 SUBTYPES = ["EC","ENR1","ENR2","ES","LC","LS","WT"]
 DEVELOPMENT =["P9P10","P12P13","P14P18","P30P40"]
+OPTIONS = ["n","y"]
+POSTFIX = ["","_sub_ipsi_contra"]
 
 
 Fig2_panel_name = dict({"modularity_index":"H","participation_pos":"I","module_degree_zscore":"J","local_assortativity_pos_whole":"K"})
@@ -47,7 +49,10 @@ rule all:
 		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_{seed}.csv",seed=SEEDS),
 		expand(DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_{seed}.csv",seed=SEEDS),
 		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_all.csv",
-		DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_all.csv"
+		DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_all.csv",
+		expand(FIG_TARGET_DIR+"tsne_all_subtypes_{sub_ipsi_contra}_{st}_seeds.png",sub_ipsi_contra='y',st="subtype"),
+		expand(DATA_TARGET_DIR+"behavior_features_pandas{pf}.csv",pf=POSTFIX),
+		expand(DATA_TARGET_DIR+"graph_properties_with_behavior_pandas{pf}_all.csv",pf=POSTFIX)
 
 
 
@@ -147,12 +152,6 @@ rule collate_graph_features_subtype_ipsi_contra_dataframe:
 
 
 
-
-
-
-
-
-
 rule Figure2_panelH:
 	input:
 		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv"
@@ -186,4 +185,28 @@ rule Figure2_panelK:
 		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["local_assortativity_pos_whole"])
 	run:
 		shell("python Figure\ 2/Figure2_PanelK.py")
+
+
+rule read_data_behavior:
+	input:
+		"For Paper/BEHAVIOR/BALANCE/Catwalk_Norm_Profiles_Cuff_Sham_Ctrl.xlsx",
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_all.csv",
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_all.csv"
+	output:
+		expand(DATA_TARGET_DIR+"behavior_features_pandas{pf}.csv",pf=POSTFIX),
+		expand(DATA_TARGET_DIR+"graph_properties_with_behavior_pandas{pf}_all.csv",pf=POSTFIX)
+	run:
+		for op in OPTIONS:
+			shell("python Behavior/read_data_behavior.py {sub_ipsi_contra}".format(sub_ipsi_contra=op))
+
+
+
+rule Figure5_panelC:
+	input:
+		DATA_TARGET_DIR+"graph_properties_with_behavior_pandas_sub_ipsi_contra_all.csv"
+	output:
+		expand(FIG_TARGET_DIR+"tsne_all_subtypes_{sub_ipsi_contra}_{st}_seeds.png",sub_ipsi_contra='y',st="subtype")
+	run:
+		shell("python Figure\ 5/Figure5_PanelC.py y")
+			
 

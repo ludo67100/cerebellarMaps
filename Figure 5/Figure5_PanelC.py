@@ -27,12 +27,12 @@ import matplotlib.lines as mlines
 
 matplotlib.rcParams['pdf.fonttype'] = 42
 
-sys.path.append("../common/")
+sys.path.append("common/")
 import analyze as anal
 
 # Processed data 
-data_target_dir = "../data/"
-fig_target_dir = "../figs/"
+data_target_dir = "data/"
+fig_target_dir = "figs/"
 
 electrophys = "ELECTROPHY"
 behavior = "BEHAVIOR"

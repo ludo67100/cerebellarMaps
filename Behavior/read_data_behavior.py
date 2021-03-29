@@ -15,10 +15,10 @@ import sys
 
 
 # Raw data
-data_dir = "../../COMPLETE_DATASET/For\\ Paper/BEHAVIOR/BALANCE/"
+data_dir = "For Paper/BEHAVIOR/BALANCE/"
 # 
-data_target_dir = "../data/"
-fig_target_dir = "../figs/"
+data_target_dir = "data/"
+fig_target_dir = "figs/"
 
 electrophys = "ELECTROPHY"
 behavior = "BEHAVIOR"
@@ -39,10 +39,17 @@ y_features = list(behavior_features.keys())
 for k in y_features:
     temp_behav[k] = []
                                                                                                                  
-behavior_catwalk = pd.read_excel(data_dir+"/"+"Catwalk_Norm_Profiles_Cuff_Sham_Ctrl.xlsx")
+behavior_catwalk = pd.read_excel(data_dir+"/"+"Catwalk_Raw_Profiles_Cuff_Sham_Ctrl.xlsx")
 
-animals_names = [x.split('_')[1] for x in list(behavior_catwalk["mouse"]) ]
-temp_subtypes = [x.split('_')[0] for x in list(behavior_catwalk["mouse"]) ]
+behavior_catwalk = behavior_catwalk[~behavior_catwalk.mouse.str.contains("WT")] 
+
+
+#behavior_catwalk = behavior_catwalk.rename(columns={'Unnamed: 0':'mouse'})
+animals_names = [x.split('_')[1] if "WT" not in x else x[-1] for x in list(behavior_catwalk["mouse"]) ]
+temp_subtypes = [x.split('_')[0] if "WT" not in x else "WT" for x in list(behavior_catwalk["mouse"]) ]
+
+print(animals_names)
+print(temp_subtypes)
 
 gammas = np.round(np.arange(0.0,1.5,0.17),2)
 
@@ -70,7 +77,7 @@ graph_names_short = [ x.split('-')[0] if len(x.split('-')) <= 2 else x.split('-'
 
 for i,an in enumerate(animals_names):
     catwalk_mouse = behavior_catwalk[behavior_catwalk["mouse"].str.contains(an)]
-    baseline = float(catwalk_mouse["baseline"])
+    baseline = np.array(catwalk_mouse["baseline"])
     auc_early = np.sum(np.array((catwalk_mouse[catwalk_mouse.keys()[2:4]]))) # algebraic value with sign
     auc_late = np.sum(np.array((catwalk_mouse[catwalk_mouse.keys()[4:8]])))
     auc_global = np.sum(np.array(np.abs(catwalk_mouse[catwalk_mouse.keys()[2:8]]))) # Total plasticity irrespective of direction
