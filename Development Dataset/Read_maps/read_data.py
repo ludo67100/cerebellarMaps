@@ -14,11 +14,11 @@ import pandas as pd
 
 
 # Read the raw data from here
-data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Development_Dataset/"
+data_dir = "For Paper/EPHYS/Development_Dataset/"
 # Store the processed data here
-data_target_dir = "../../data/"
+data_target_dir = "data/"
 # Target directory for the figures
-fig_target_dir = "../../figs/"
+fig_target_dir = "figs/"
 
 
 # Name of the subfolder with developmental data
