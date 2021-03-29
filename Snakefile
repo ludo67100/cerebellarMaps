@@ -35,8 +35,8 @@ rule all:
 		expand(DATA_TARGET_DIR+"graph_properties_pandas_{seed}.csv",seed=SEEDS),
 		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_all.csv",
 		DATA_TARGET_DIR+"graph_properties_pandas_all.csv",
-		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["modularity_index"])		
-
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["modularity_index"]),
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["participation_pos"])
 
 
 
@@ -117,4 +117,12 @@ rule Figure2_panelH:
 	run:
 		shell("python Figure\ 2/Figure2_PanelH.py")
 			
+
+rule Figure2_panelI:
+	input:
+		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv"
+	output:
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["participation_pos"])
+	run:
+		shell("python Figure\ 2/Figure2_PanelI.py")
 
