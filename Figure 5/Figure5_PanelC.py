@@ -68,6 +68,9 @@ elif sub_ipsi_contra == "semi_zone_wise": # Instead of values for every zone, on
         graph_prop_df[x+"-"+"var"] = var
 
 
+# Merge ENR1 and ENR2 and replace by S-LTR
+graph_prop_df['subtype'] = graph_prop_df['subtype'].replace('ENR1',"S-LTR")
+graph_prop_df['subtype'] = graph_prop_df['subtype'].replace('ENR2',"S-LTR")
 
 
 sub_data_temp = graph_prop_df[graph_props+["names","subtype","gamma"]]
@@ -128,8 +131,7 @@ sns.set(font_scale=1.5)
 sns.set_style(style='white')
 seed = np.random.randint(0,9999999)
 sub_data2_zs_gp = sub_data2_zs_gp.dropna()
-
-seed = 9216226
+seed = 8214698
 print(seed)
 np.random.seed(seed)
 
