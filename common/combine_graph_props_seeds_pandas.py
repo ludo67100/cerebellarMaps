@@ -19,7 +19,7 @@ import sys
 
 #  
 data_target_dir = "data/"
-fig_target_dir = ".figs/"
+fig_target_dir = "figs/"
 
 data_type = sys.argv[1]
 

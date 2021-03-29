@@ -38,7 +38,12 @@ rule all:
 		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["modularity_index"]),
 		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["participation_pos"]),
 		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["module_degree_zscore"]),
-		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["local_assortativity_pos_whole"])
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["local_assortativity_pos_whole"]),
+
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_days_{seed}.csv",seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_days_{seed}.csv",seed=SEEDS),
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_days_all.csv",
+		DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_days_all.csv"
 
 
 
@@ -109,6 +114,21 @@ rule collate_graph_features_adaptive_dataframe:
 		DATA_TARGET_DIR+"graph_properties_pandas_all.csv"
 	run:
 		shell("python common/combine_graph_props_seeds_pandas.py subtype")
+
+
+
+rule collate_graph_features_development_ipsi_contra_dataframe:
+	input:
+		expand(DATA_TARGET_DIR+"graph_properties_norm_{seed}.pickle",seed=SEEDS)
+	output:
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_days_{seed}.csv",seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_days_{seed}.csv",seed=SEEDS),
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_days_all.csv",
+		DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_days_all.csv"
+	run:
+		shell("python common/combine_graph_props_ipsi_contra_seeds_pandas.py development")
+
+
 
 
 rule Figure2_panelH:

@@ -18,9 +18,9 @@ import sys
 
 
 #  
-data_target_dir = "../data/"
+data_target_dir = "data/"
 
-fig_target_dir = "../figs/"
+fig_target_dir = "figs/"
 
 num_or_size = "size" # num of clusters or size of the largest cluster
 data_type = sys.argv[1]
@@ -32,11 +32,11 @@ if data_type == "subtype":
 
     electrophys = "ELECTROPHY"
     # Raw data
-    data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Adaptive_Dataset/"
+    data_dir = "For Paper/EPHYS/Adaptive_Dataset/"
 
     subtypes = os.listdir(data_dir)
-    data_2d = pickle.load(open(data_target_dir+"data_2d_maps.pickle","rb"))
-    data = pd.read_csv(data_target_dir+"meta_data.csv")
+    #data_2d = pickle.load(open(data_target_dir+"data_2d_maps.pickle","rb"))
+    #data = pd.read_csv(data_target_dir+"meta_data.csv")
 
     files = glob.glob(data_target_dir+"graph_properties_norm_*.pickle")
 
@@ -44,11 +44,11 @@ elif data_type == "development":
 
     development = "DEVELOPMENT"
     # Raw data
-    data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Development_Dataset/"
+    data_dir = "For Paper/EPHYS/Development_Dataset/"
 
     subtypes = os.listdir(data_dir) # Just the name of the variable is subtypes, its actually days
-    data_2d = pickle.load(open(data_target_dir+"data_2d_maps_days.pickle","rb"))
-    data = pd.read_csv(data_target_dir+"meta_data_days.csv")
+    #data_2d = pickle.load(open(data_target_dir+"data_2d_maps_days.pickle","rb"))
+    #data = pd.read_csv(data_target_dir+"meta_data_days.csv")
 
 
     files = glob.glob(data_target_dir+"graph_properties_days_norm_*.pickle")
