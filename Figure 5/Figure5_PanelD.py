@@ -130,46 +130,7 @@ if "zone" in ipsi_contra:
 else:
     sub_dat11_wgp = sub_dat1_wgp[independent_props+["subtype","subtype_val","names"]]
 sub_dat11_wgp["short_names"] = [ x.split('-')[0]  for x in sub_dat11_wgp["names"]]
-'''
-phenotypes = np.array(sub_dat11_wgp["subtype"])
-#ENR
-ind_7 = [i    for i,(x,y) in enumerate(zip(phenotypes,np.array(sub_dat11_wgp["short_names"]))) if x == "ENR" and y in ENR_7 ]
-phenotypes[ind_7] = "ENR_7"
-ind_19 = [i    for i,(x,y) in enumerate(zip(phenotypes,np.array(sub_dat11_wgp["short_names"]))) if x == "ENR" and y in ENR_19 ] 
-phenotypes[ind_19] = "ENR_19"
-# LS - S and C series
-graph_LC_LS = sub_dat11_wgp.loc[(sub_dat11_wgp["subtype"]=="LC")|(sub_dat11_wgp["subtype"]=="LS")]
-LS_s_names = [ na.split('-')[0]   for na in np.unique(graph_LC_LS["names"] ) if "S" in na]
-LS_c_names = [ na.split('-')[0]   for na in np.unique(graph_LC_LS["names"] ) if "C" in na]
-ind_c = [i    for i,(x,y) in enumerate(zip(phenotypes,np.array(sub_dat11_wgp["short_names"]))) if x == "LS" and y in LS_c_names ]
-phenotypes[ind_c] = "LS1 - C"
-ind_s = [i    for i,(x,y) in enumerate(zip(phenotypes,np.array(sub_dat11_wgp["short_names"]))) if x == "LS" and y in LS_s_names ]
-phenotypes[ind_s] = "LS1 - S"
-ind_notsc = [i    for i,(x,y) in enumerate(zip(phenotypes,np.array(sub_dat11_wgp["short_names"]))) if x == "LS" and (y not in LS_s_names or y not in LS_c_names) ]
-phenotypes[ind_notsc] = "LS3 - A"
 
-sub_dat11_wgp["phenotypes"] = phenotypes
-sub_dat11_wgp = sub_dat11_wgp.loc[sub_dat11_wgp["phenotypes"]!="LS3 - A"]
-'''
-
-
-
-# Change name of columns, for zone wise, because "-" is considered as subtraction
-'''
-change_dict = dict()
-if ipsi_contra == "zone_wise":
-
-    independent_props1 = []
-    for keys in sub_dat11_wgp.keys():
-        if "modularity_index" in keys :
-            independent_props1.append(keys)
-            continue
-        elif "-" not in keys:
-            continue
-        change_dict[keys] = keys.split('-')[0]+"_"+keys.split('-')[1]
-        independent_props1.append(keys.split('-')[0]+"_"+keys.split('-')[1])
-    sub_dat11_wgp = sub_dat11_wgp.rename(columns=change_dict)
-'''
 
 
 sub_dat11_wgp = sub_dat11_wgp.dropna()
@@ -222,16 +183,6 @@ elif ipsi_contra == "semi_zone_wise":
     tit1 ="Zone wise macro properties"
 
 
-fig_td = pl.figure()
-t1 = fig_td.add_subplot(111)
-bins = np.arange(0,30,1)
-t1.hist(np.hstack(tree_depth_list),bins=bins,density=True,label="actual",alpha=0.5)
-t1.hist(np.hstack(tree_depth_list_shuff),bins=bins,density=True,label="shuffled",alpha=0.5)
-t1.set_title("Actual tree depth ("+tit1+")",fontsize=15,fontweight='bold')
-t1.legend(prop={'size':12,'weight':'bold'})
-fig_td.savefig(fig_target_dir+"Tree_depth_"+ipsi_contra+"_"+st_type+".png")
-
-
 g_point = sns.pointplot(x="Labels",y="Accuracy",data=accuracy_comparison_df,capsize=0.2)
 g_point.figure.suptitle(tit1,fontsize=15,fontweight='bold')
 g_point.figure.savefig(fig_target_dir+"Accuracy_comparison_"+ipsi_contra+"_"+st_type+".png")
@@ -260,22 +211,6 @@ fig.savefig(fig_target_dir+"Confusion_matrix_random_forest_"+ipsi_contra+"_"+st_
 fig.savefig(fig_target_dir+"Confusion_matrix_random_forest_"+ipsi_contra+"_"+st_type+".pdf")
 
 
-feat_imp = pd.DataFrame(columns=["Features","score"])
-feat_imp["score"] = list(clf.feature_importances_)
-feat_imp["Features"] = list(sub_dat11_wgp.keys()[:len(list(clf.feature_importances_))] )
-
-fig1 = pl.figure(figsize=(18,8))
-t11 = fig1.add_subplot(111)
-g1 = sns.barplot(y="Features",x="score",data=feat_imp,orient='h',order=feat_imp["Features"][np.argsort(feat_imp["score"])], palette='magma',ax=t11)
-g1.axes.set_title(tit1+" (Feature importance)",fontsize=15,fontweight='bold')
-for x in g1.axes.get_yticklabels():
-    x.set_fontsize(10)
-    x.set_fontweight('bold')
-    x.set_rotation(25)
-
-g1.figure.subplots_adjust(left=0.2,bottom=0.15)
-g1.figure.savefig(fig_target_dir+"Feature_importance_"+ipsi_contra+"_"+st_type+".png")
-g1.figure.savefig(fig_target_dir+"Feature_importance_"+ipsi_contra+"_"+st_type+".pdf")
 
 
 
