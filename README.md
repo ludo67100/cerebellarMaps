@@ -16,7 +16,7 @@ Each script was tested and built with an IPython console from Spyder (python 3.6
 -snakemake
 
 # Dataset
-Please download and unzip COMPLETE_DATASET.zip file in the main branch. This folder contains pre-processed synaptic maps, balance profiles and locomotor performances in the running wheel. 
+The complete dataset is available upon request to the authors. It contains pre-processed synaptic maps, balance profiles and locomotor performances in the running wheel. 
 
 # Scripts
 Scripts are sorted according to the output panels from each figures in the paper.
