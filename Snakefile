@@ -37,7 +37,8 @@ rule all:
 		DATA_TARGET_DIR+"graph_properties_pandas_all.csv",
 		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["modularity_index"]),
 		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["participation_pos"]),
-		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["module_degree_zscore"])
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["module_degree_zscore"]),
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["local_assortativity_pos_whole"])
 
 
 
@@ -136,4 +137,11 @@ rule Figure2_panelJ:
 	run:
 		shell("python Figure\ 2/Figure2_PanelJ.py")
 
+rule Figure2_panelK:
+	input:
+		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv"
+	output:
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["local_assortativity_pos_whole"])
+	run:
+		shell("python Figure\ 2/Figure2_PanelK.py")
 
