@@ -8,6 +8,9 @@ FIG_TARGET_DIR = "figs/"
 SUBTYPES = ["EC","ENR1","ENR2","ES","LC","LS","WT"]
 DEVELOPMENT =["P9P10","P12P13","P14P18","P30P40"]
 
+
+Fig2_panel_name = dict({"modularity_index":"H","participation_pos":"I","module_degree_zscore":"J","local_assortativity_pos_whole":"K"})
+
 #SEEDS = list(np.random.randint(1,99999999,20))
 #pickle.dump(SEEDS,open(DATA_TARGET_DIR+"seeds.pickle","wb"))
 SEEDS = list(pickle.load(open(DATA_TARGET_DIR+"seeds.pickle","rb")))[:5]
@@ -31,9 +34,13 @@ rule all:
 		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_{seed}.csv",seed=SEEDS),
 		expand(DATA_TARGET_DIR+"graph_properties_pandas_{seed}.csv",seed=SEEDS),
 		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_all.csv",
-		DATA_TARGET_DIR+"graph_properties_pandas_all.csv"
+		DATA_TARGET_DIR+"graph_properties_pandas_all.csv",
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["modularity_index"])		
 
-		
+
+
+
+
 
 rule read_data_adaptive:
 	input:
@@ -101,4 +108,13 @@ rule collate_graph_features_adaptive_dataframe:
 	run:
 		shell("python common/combine_graph_props_seeds_pandas.py subtype")
 
+
+rule Figure2_panelH:
+	input:
+		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv"
+	output:
+		expand(FIG_TARGET_DIR+"Figure2_Panel{N}_development.png",N=Fig2_panel_name["modularity_index"])
+	run:
+		shell("python Figure\ 2/Figure2_PanelH.py")
+			
 

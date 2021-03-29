@@ -44,10 +44,10 @@ if data_type == "subtype":
     phenotypes[ind_19] = "ENR_19"
 
     graph_prop_df["subtype"] = phenotypes
-    fig_target_dir = "../figs/"
+    #fig_target_dir = "figs/"
 elif data_type == "development":
     graph_prop_df = pd.read_csv(data_target_dir+"graph_properties_pandas_days_all.csv")
-    fig_target_dir = "../figs/"
+    #fig_target_dir = "figs/"
 
 if data_type == "subtype":
     colors = ["skyblue","forestgreen","salmon","gray","orange","purple"]
