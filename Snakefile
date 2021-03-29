@@ -23,7 +23,11 @@ rule all:
 		DATA_TARGET_DIR+"data_2d_maps_days.pickle",	
 		expand(DATA_TARGET_DIR+"covariance_maps_days_norm.pickle"),
 		expand(DATA_TARGET_DIR+"graph_properties_days_norm_{seed}.pickle",seed=SEEDS),
-		expand(FIG_TARGET_DIR+"corr_maps_rearranged_{st}_norm_{seed}.png",st=DEVELOPMENT,seed=SEEDS)
+		expand(FIG_TARGET_DIR+"corr_maps_rearranged_{st}_norm_{seed}.png",st=DEVELOPMENT,seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_days_{seed}.csv",seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_days_{seed}.csv",seed=SEEDS),
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_days_all.csv",
+		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv"
 
 		
 
@@ -67,6 +71,20 @@ rule calc_graph_features_development:
 
 	run:
 		shell("python Development\ Dataset/Calculate_graph_features/plot_correlation_maps_and_calculate_graph_features.py")
+
+
+
+rule collate_graph_features_development_dataframe:
+	input:
+		expand(DATA_TARGET_DIR+"graph_properties_days_norm_{seed}.pickle",seed=SEEDS)
+	output:
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_days_{seed}.csv",seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_days_{seed}.csv",seed=SEEDS),
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_days_all.csv",
+		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv"
+	run:
+		shell("python common/combine_graph_props_seeds_pandas.py development")
+
 
 
 
