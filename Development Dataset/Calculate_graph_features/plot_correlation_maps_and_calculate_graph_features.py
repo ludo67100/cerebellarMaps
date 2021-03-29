@@ -16,15 +16,15 @@ import matplotlib.cm as cm
 #import analyze as anal
 import sys
 
-sys.path.append("../../common/")
+sys.path.append("common/")
 import graph_prop_funcs_analyze as graph_anal
 
 #Raw data here
-data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Development_Dataset/"
+data_dir = "For Paper/EPHYS/Development_Dataset/"
 
 # Store data after preprocessing here
-data_target_dir = "../../data/"
-fig_target_dir = "../../figs/"
+data_target_dir = "data/"
+fig_target_dir = "figs/"
 
 development = "DEVELOPMENT"
 days = os.listdir(data_dir)
@@ -66,8 +66,11 @@ participation_neg_all = []
 mdz_all = []
 
 # For different seeds, calculate graph properties
-for t in np.arange(0,5):
-    seed = np.random.randint(0,9999999)
+seeds_list = pickle.load(open(data_target_dir+"seeds.pickle","rb"))[:5]
+print(seeds_list)
+#for t in np.arange(0,5):
+for seed in seeds_list:
+    #seed = np.random.randint(0,9999999)
     print(seed)
     # Plot the correlation maps for all animals within a subtype and calculate the graph properties for the subtype  
 
