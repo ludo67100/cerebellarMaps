@@ -52,9 +52,9 @@ rule all:
 		DATA_TARGET_DIR+"graph_properties_pandas_sub_contra_ipsi_all.csv",
 		expand(FIG_TARGET_DIR+"tsne_all_subtypes_{sub_ipsi_contra}_{st}_seeds.png",sub_ipsi_contra='y',st="subtype"),
 		expand(DATA_TARGET_DIR+"behavior_features_pandas{pf}.csv",pf=POSTFIX),
-		expand(DATA_TARGET_DIR+"graph_properties_with_behavior_pandas{pf}_all.csv",pf=POSTFIX)
-
-
+		expand(DATA_TARGET_DIR+"graph_properties_with_behavior_pandas{pf}_all.csv",pf=POSTFIX),
+		FIG_TARGET_DIR+"Accuracy_comparison_y_subtype.png",
+		FIG_TARGET_DIR+"Confusion_matrix_random_forest_y_subtype.png"
 
 
 
@@ -74,7 +74,8 @@ rule calc_graph_features_adaptive:
 		DATA_TARGET_DIR+"data_2d_maps.pickle",
 	output:
 		expand(DATA_TARGET_DIR+"covariance_maps_norm_{seed}.pickle",seed=SEEDS),
-		expand(FIG_TARGET_DIR+"corr_maps_rearranged_{st}_norm_{seed}.png",st=SUBTYPES,seed=SEEDS)
+		expand(FIG_TARGET_DIR+"corr_maps_rearranged_{st}_norm_{seed}.png",st=SUBTYPES,seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_norm_{seed}.pickle",seed=SEEDS)
 	run:
 		shell("python Adaptive\ Dataset/Calculate_graph_features/plot_correlation_maps_and_calculate_graph_features.py")
 
@@ -208,5 +209,16 @@ rule Figure5_panelC:
 		expand(FIG_TARGET_DIR+"tsne_all_subtypes_{sub_ipsi_contra}_{st}_seeds.png",sub_ipsi_contra='y',st="subtype")
 	run:
 		shell("python Figure\ 5/Figure5_PanelC.py y")
-			
+
+
+rule Figure5_panelD:
+	input:
+		DATA_TARGET_DIR+"graph_properties_with_behavior_pandas_all.csv",
+		DATA_TARGET_DIR+"graph_properties_with_behavior_pandas_sub_ipsi_contra_all.csv"	
+	output:
+		FIG_TARGET_DIR+"Accuracy_comparison_y_subtype.png",
+		FIG_TARGET_DIR+"Confusion_matrix_random_forest_y_subtype.png"
+	run:
+		shell("python Figure\ 5/Figure5_PanelD.py y subtype")
+
 

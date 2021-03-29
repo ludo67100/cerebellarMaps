@@ -131,7 +131,7 @@ sns.set(font_scale=1.5)
 sns.set_style(style='white')
 seed = np.random.randint(0,9999999)
 sub_data2_zs_gp = sub_data2_zs_gp.dropna()
-seed = 8214698
+seed = 534950
 print(seed)
 np.random.seed(seed)
 

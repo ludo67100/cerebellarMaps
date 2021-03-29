@@ -22,11 +22,11 @@ from sklearn.metrics import roc_curve, auc,confusion_matrix
 from sklearn.ensemble import RandomForestClassifier
 
 
-sys.path.append("../common/")
+sys.path.append("common/")
 import analyze as anal
 
-data_target_dir = "../data/"
-fig_target_dir = "../figs/"
+data_target_dir = "data/"
+fig_target_dir = "figs/"
 
 ENR_7 = ["180517","190517","160517","170517","200517","270820","280820"]
 ENR_19 = ["220319","230319","210319","171219","090920","100920"]
@@ -37,12 +37,11 @@ zone_names = ["B_contra","AX_contra","Alat_contra","Amed_contra","Amed_ipsi","Al
 
 ipsi_contra = sys.argv[1]
 st_type = sys.argv[2]
-
+'''
 if os.path.exists(fig_target_dir+"all_subtypes") == False:
     os.mkdir(fig_target_dir+"all_subtypes")
 fig_target_dir = fig_target_dir+"all_subtypes"+"/"
-
-fixed_slopes = "y"
+'''
 
 if ipsi_contra == "n":
     independent_props = ["modularity_index","participation_pos","module_degree_zscore","local_assortativity_pos_whole"]
@@ -103,6 +102,11 @@ elif ipsi_contra == "semi_zone_wise": # Instead of values for every zone, only u
 
 
 print(len(graph_prop_enr_behav_whole))
+
+
+graph_prop_enr_behav_whole["subtype"] = graph_prop_enr_behav_whole["subtype"].replace('ENR1','S/LTR')
+graph_prop_enr_behav_whole["subtype"] = graph_prop_enr_behav_whole["subtype"].replace('ENR2','S/LTR')
+
 
 
 dat_wgp = graph_prop_enr_behav_whole
