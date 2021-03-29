@@ -17,14 +17,14 @@ import matplotlib.cm as cm
 import sys
 import glob
 
-sys.path.append("../../common/")
+sys.path.append("common/")
 import graph_prop_funcs_analyze as graph_anal
 
 # Raw data here
-data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Adaptive_Dataset/"
+data_dir = "For Paper/EPHYS/Adaptive_Dataset/"
 # Store data after preprocessing here
-data_target_dir = "../../data/"
-fig_target_dir = "../../figs/"
+data_target_dir = "data/"
+fig_target_dir = "figs/"
 
 electrophys = "ELECTROPHY"
 # All subtypes - LC,LS,EC,ES,Ct,S-L/TR
@@ -61,10 +61,13 @@ B_ipis : 125 to 285
 '''
 
 mat_type = "norm"
-# 5 different seeds to calculate graph properties 
-for t in np.arange(0,20):
+# Read seeds and calculate graph properties for a different seed
 
-    seed = np.random.randint(0,9999999)
+seeds_list = pickle.load(open(data_target_dir+"seeds.pickle","rb"))
+
+for seed in seeds_list:
+
+    #seed = np.random.randint(0,9999999)
     print(seed)
 
     participation_pos_all = []
