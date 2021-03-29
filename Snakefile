@@ -27,7 +27,11 @@ rule all:
 		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_days_{seed}.csv",seed=SEEDS),
 		expand(DATA_TARGET_DIR+"graph_properties_pandas_days_{seed}.csv",seed=SEEDS),
 		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_days_all.csv",
-		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv"
+		DATA_TARGET_DIR+"graph_properties_pandas_days_all.csv",
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_{seed}.csv",seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_{seed}.csv",seed=SEEDS),
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_all.csv",
+		DATA_TARGET_DIR+"graph_properties_pandas_all.csv"
 
 		
 
@@ -86,5 +90,15 @@ rule collate_graph_features_development_dataframe:
 		shell("python common/combine_graph_props_seeds_pandas.py development")
 
 
+rule collate_graph_features_adaptive_dataframe:
+	input:
+		expand(DATA_TARGET_DIR+"graph_properties_norm_{seed}.pickle",seed=SEEDS)
+	output:
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_{seed}.csv",seed=SEEDS),
+		expand(DATA_TARGET_DIR+"graph_properties_pandas_{seed}.csv",seed=SEEDS),
+		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_all.csv",
+		DATA_TARGET_DIR+"graph_properties_pandas_all.csv"
+	run:
+		shell("python common/combine_graph_props_seeds_pandas.py subtype")
 
 
