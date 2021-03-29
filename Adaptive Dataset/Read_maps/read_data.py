@@ -12,10 +12,11 @@ import h5py
 import pandas as pd
 
 # Read the raw data from here
-data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Adaptive_Dataset/"
+#data_dir = "../../COMPLETE_DATASET/For\\ Paper/EPHYS/Adaptive_Dataset/"
+data_dir = "For Paper/EPHYS/Adaptive_Dataset/"
 # Store processed data here
-data_target_dir = "../../data/"
-fig_target_dir = "../../figs/"
+data_target_dir = "data/"
+fig_target_dir = "figs/"
 
 #Name of the subfolder with adaptive data
 electrophys = "ELECTROPHY"
@@ -62,7 +63,7 @@ for st in subtypes:
 
                 #synaptic currents in the map, not zscored
                 #data_2d[st][rn][cn]["map_nz"] = pd.read_csv(data_dir+electrophys+"/"+st+"/"+cell+"/"+cell+"_Amp_2D_OK.csv",header=None)
-                data_2d[st][rn][cn]["map_nz"] = pd.read_csv(data_dir"/"+st+"/"+cell+"/"+cell+"_Amp_2D_OK.csv",header=None)
+                data_2d[st][rn][cn]["map_nz"] = pd.read_csv(data_dir+"/"+st+"/"+cell+"/"+cell+"_Amp_2D_OK.csv",header=None)
                 data_2d[st][rn][cn]["map"] = pd.read_csv(data_dir+"/"+st+"/"+cell+"/"+cell+"_Amp_zscore_2D_OK.csv",header=None)      # Assumption is if rat number is same, at least the cell number is different, that is no duplicate folders for the same rat num and cell number
 		
                 arr =  np.array(data_2d[st][rn][cn]["map"])
