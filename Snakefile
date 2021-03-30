@@ -58,9 +58,10 @@ rule all:
 		#expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_{pf}all.csv",pf=POSTFIX),
 		expand(DATA_TARGET_DIR+"graph_properties_behavior_enr{pf}_all.csv",pf=POSTFIX),
 
-
 		DATA_TARGET_DIR+"Predicted_actual_scatter_points_slope_n.csv",
-		FIG_TARGET_DIR+"/enr_slope/"+"Predicted_actual_scatter_jittered_slope_n.png"	
+		FIG_TARGET_DIR+"/enr_slope/"+"Predicted_actual_scatter_jittered_slope_n.png",	
+		DATA_TARGET_DIR+"Predicted_actual_scatter_points_total_distance_n.csv",
+		FIG_TARGET_DIR+"/enr_total_distance/"+"Predicted_actual_scatter_jittered_total_distance_n.png"	
 
 
 
@@ -239,7 +240,6 @@ rule read_enrichment:
 
 
 
-
 rule Figure6_PanelA:
 	input:
 		DATA_TARGET_DIR+"graph_properties_behavior_enr_all.csv"
@@ -248,4 +248,16 @@ rule Figure6_PanelA:
 		FIG_TARGET_DIR+"/enr_slope/"+"Predicted_actual_scatter_jittered_slope_n.png"	
 	run:
 		shell("python Figure\ 6/Figure6_PanelA.py")
+
+
+rule Figure6_PanelB:
+	input:
+		DATA_TARGET_DIR+"graph_properties_behavior_enr_all.csv"
+	output:
+		DATA_TARGET_DIR+"Predicted_actual_scatter_points_total_distance_n.csv",
+		FIG_TARGET_DIR+"/enr_total_distance/"+"Predicted_actual_scatter_jittered_total_distance_n.png"	
+	run:
+		shell("python Figure\ 6/Figure6_PanelB.py")
+
+
 
