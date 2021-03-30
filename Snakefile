@@ -54,7 +54,13 @@ rule all:
 		expand(DATA_TARGET_DIR+"behavior_features_pandas{pf}.csv",pf=POSTFIX),
 		expand(DATA_TARGET_DIR+"graph_properties_with_behavior_pandas{pf}_all.csv",pf=POSTFIX),
 		FIG_TARGET_DIR+"Accuracy_comparison_y_subtype.png",
-		FIG_TARGET_DIR+"Confusion_matrix_random_forest_y_subtype.png"
+		FIG_TARGET_DIR+"Confusion_matrix_random_forest_y_subtype.png",
+		#expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_{pf}all.csv",pf=POSTFIX),
+		expand(DATA_TARGET_DIR+"graph_properties_behavior_enr{pf}_all.csv",pf=POSTFIX),
+
+
+		DATA_TARGET_DIR+"Predicted_actual_scatter_points_slope_n.csv",
+		FIG_TARGET_DIR+"/enr_slope/"+"Predicted_actual_scatter_jittered_slope_n.png"	
 
 
 
@@ -221,4 +227,25 @@ rule Figure5_panelD:
 	run:
 		shell("python Figure\ 5/Figure5_PanelD.py y subtype")
 
+rule read_enrichment:
+	input:
+		"For Paper/BEHAVIOR/ENRICHMENT/Enrichment.xlsx"
+	output:
+		#expand(DATA_TARGET_DIR+"graph_properties_pandas_for_behav_{pf}all.csv",pf=POSTFIX),
+		expand(DATA_TARGET_DIR+"graph_properties_behavior_enr{pf}_all.csv",pf=POSTFIX)
+	run:
+		for op in OPTIONS:
+			shell("python Behavior/read_enrichment.py {sub_ipsi_contra}".format(sub_ipsi_contra=op))
+
+
+
+
+rule Figure6_PanelA:
+	input:
+		DATA_TARGET_DIR+"graph_properties_behavior_enr_all.csv"
+	output:
+		DATA_TARGET_DIR+"Predicted_actual_scatter_points_slope_n.csv",
+		FIG_TARGET_DIR+"/enr_slope/"+"Predicted_actual_scatter_jittered_slope_n.png"	
+	run:
+		shell("python Figure\ 6/Figure6_PanelA.py")
 

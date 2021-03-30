@@ -16,11 +16,11 @@ import seaborn as sns
 
 
 # Raw data
-data_dir = "../../COMPLETE_DATASET/For\\ Paper/BEHAVIOR/ENRICHMENT/"
+data_dir = "For Paper/BEHAVIOR/ENRICHMENT/"
 
 
-data_target_dir = "../data/"
-fig_target_dir = "../figs/"
+data_target_dir = "data/"
+fig_target_dir = "figs/"
 
 electrophys = "ELECTROPHY"
 behavior = "BEHAVIOR"
@@ -82,7 +82,7 @@ if sub_ipsi_contra == "n":
 else:
     graph_prop_df = pd.read_csv(data_target_dir+"graph_properties_pandas_for_behav_sub_contra_ipsi_all.csv")
 
-graph_prop_enr = graph_prop_df.loc[graph_prop_df["subtype"]=="ENR"]
+graph_prop_enr = graph_prop_df.loc[(graph_prop_df["subtype"]=="ENR1")| (graph_prop_df["subtype"]=="ENR2")]
 graph_prop_enr["short-names"] = [ x.split('-')[0] for x in np.array(graph_prop_enr["names"]) ]
 
 graph_prop_enr_behav = pd.merge(enrichment_df,graph_prop_enr,right_on='short-names',left_on='short-names')
