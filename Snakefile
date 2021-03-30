@@ -63,7 +63,9 @@ rule all:
 		DATA_TARGET_DIR+"Predicted_actual_scatter_points_total_distance_n.csv",
 		FIG_TARGET_DIR+"/enr_total_distance/"+"Predicted_actual_scatter_jittered_total_distance_n.png",	
 		DATA_TARGET_DIR+"Predicted_actual_scatter_points_lcls_auc_early_n.csv",
-		FIG_TARGET_DIR+"/lcls_auc_early/"+"Predicted_actual_scatter_jittered_auc_early_n.png"	
+		FIG_TARGET_DIR+"/lcls_auc_early/"+"Predicted_actual_scatter_jittered_auc_early_n.png",
+		DATA_TARGET_DIR+"Predicted_actual_scatter_points_lcls_post_op15_n.csv",
+		FIG_TARGET_DIR+"/lcls_post_op15/"+"Predicted_actual_scatter_jittered_post_op15_n.png"	
 
 
 
@@ -270,4 +272,14 @@ rule Figure6_PanelC:
 		FIG_TARGET_DIR+"/lcls_auc_early/"+"Predicted_actual_scatter_jittered_auc_early_n.png"	
 	run:
 		shell("python Figure\ 6/Figure6_PanelC.py")
+
+rule Figure6_PanelD:
+	input:
+		DATA_TARGET_DIR+"graph_properties_with_behavior_pandas_all.csv"
+	output:
+		DATA_TARGET_DIR+"Predicted_actual_scatter_points_lcls_post_op15_n.csv",
+		FIG_TARGET_DIR+"/lcls_post_op15/"+"Predicted_actual_scatter_jittered_post_op15_n.png"	
+	run:
+		shell("python Figure\ 6/Figure6_PanelD.py")
+
 
