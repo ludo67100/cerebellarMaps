@@ -24,7 +24,7 @@ from adjustText import adjust_text
 sys.path.append("../common/")
 import analyze as anal
 
-data_dir = "../../COMPLETE_DATASET/For\\ Paper/BEHAVIOR/BALANCE/"
+data_dir = "For Paper/BEHAVIOR/BALANCE/"
 
 data_target_dir = "../data/"
 fig_target_dir = "../figs/"
