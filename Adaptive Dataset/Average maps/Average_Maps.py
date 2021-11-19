@@ -6,18 +6,23 @@ Computes median synaptic patterns (high resolution) for each behavioral conditio
 
 @author: ludov
 """
-
-#Define the groups
-groups = ['WT','ENR1','ENR2','EC','ES','LC','LS']
-newNomConditions = ['control','short training','long training','early cuff','early sham','adapted cuff','adapted sham']
-colors = ['skyblue','lightgreen','green','orange','purple','lightcoral','0.5']
-
 #Input folder - AMPLITUDE-----------------------------------------------------
 #dataSource = 'C:/Users/ludov/Documents/Spaeth_Bahuguna_et_al/ANALYSIS/DATASET/EPHYS/Adaptive_Dataset'
 dataSource = 'D:/03_FORMATED_DATA/For Paper/EPHYS/Adaptive_Dataset'
 
 #Savedir 
 saveDir = 'D:/000_PAPER/00_ANSWER_TO_REVIEWERS/REVISION CODE/CODE/FIGURE 4/C'
+
+
+
+
+
+#Define the groups
+groups = ['WT','ENR1','ENR2','EC','ES','LC','LS']
+newNomConditions = ['control','short training','long training','early cuff','early sham','adapted cuff','adapted sham']
+colors = ['skyblue','lightgreen','green','orange','purple','lightcoral','0.5']
+
+
 
 
 zscoreCut = 3.09
