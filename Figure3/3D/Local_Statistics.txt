@@ -1,0 +1,302 @@
+Analysis of behavioral features
+[1]--------------------- Post Op 15 ------------------------
+
+Multi condition test
+Kruskal Wallis
+KruskalResult(statistic=11.287000000000006, pvalue=0.003540455102752556)
+Post Hoc MWU tests
+CTRL vs SHAM stat=10.0 ;  p-val=0.08955
+CTRL vs CUFF stat=1.0 ; p-val=0.00444
+SHAM vs CUFF stat=15.0 ; p-val=0.00455
+
+[2]----------------------- AUCs ----------------------------
+
+control mean std
+baseline       0.000000
+day 2         -0.117611
+day 4          0.122018
+day 9          0.091854
+day 14         0.053161
+day 15        -0.059984
+day 21         0.139553
+day 28         0.096273
+day 33        -0.156860
+Unnamed: 11         NaN
+Unnamed: 12         NaN
+Unnamed: 13         NaN
+Unnamed: 14         NaN
+Unnamed: 15         NaN
+Unnamed: 16         NaN
+Unnamed: 17         NaN
+Unnamed: 18         NaN
+Unnamed: 19         NaN
+Unnamed: 20         NaN
+Unnamed: 21         NaN
+Unnamed: 22         NaN
+Unnamed: 23         NaN
+Unnamed: 24         NaN
+Unnamed: 25         NaN
+dtype: float64
+baseline       0.000000
+day 2          0.107996
+day 4          0.089991
+day 9          0.077613
+day 14         0.194516
+day 15         0.195580
+day 21         0.175741
+day 28         0.251028
+day 33         0.196884
+Unnamed: 11         NaN
+Unnamed: 12         NaN
+Unnamed: 13         NaN
+Unnamed: 14         NaN
+Unnamed: 15         NaN
+Unnamed: 16         NaN
+Unnamed: 17         NaN
+Unnamed: 18         NaN
+Unnamed: 19         NaN
+Unnamed: 20         NaN
+Unnamed: 21         NaN
+Unnamed: 22         NaN
+Unnamed: 23         NaN
+Unnamed: 24         NaN
+Unnamed: 25         NaN
+dtype: float64
+Avg +/- STD in early, late and recovery phase
+0.10913952092273835 +/- 0.1238952477412715
+0.10888089257640385 +/- 0.39333762479306067
+0.08761948569609944 +/- 0.3370958719450543
+
+sham mean std
+baseline       0.000000
+day 2         -0.032463
+day 4         -0.366713
+day 9          0.192812
+day 14         0.217176
+day 15         0.286542
+day 21        -0.010710
+day 28        -0.007190
+day 33        -0.046537
+Unnamed: 11         NaN
+Unnamed: 12         NaN
+Unnamed: 13         NaN
+Unnamed: 14         NaN
+Unnamed: 15         NaN
+Unnamed: 16         NaN
+Unnamed: 17         NaN
+Unnamed: 18         NaN
+Unnamed: 19         NaN
+Unnamed: 20         NaN
+Unnamed: 21         NaN
+Unnamed: 22         NaN
+Unnamed: 23         NaN
+Unnamed: 24         NaN
+Unnamed: 25         NaN
+dtype: float64
+baseline       0.000000
+day 2          0.313822
+day 4          0.243339
+day 9          0.312401
+day 14         0.321093
+day 15         0.428916
+day 21         0.272388
+day 28         0.178386
+day 33         0.222705
+Unnamed: 11         NaN
+Unnamed: 12         NaN
+Unnamed: 13         NaN
+Unnamed: 14         NaN
+Unnamed: 15         NaN
+Unnamed: 16         NaN
+Unnamed: 17         NaN
+Unnamed: 18         NaN
+Unnamed: 19         NaN
+Unnamed: 20         NaN
+Unnamed: 21         NaN
+Unnamed: 22         NaN
+Unnamed: 23         NaN
+Unnamed: 24         NaN
+Unnamed: 25         NaN
+dtype: float64
+Avg +/- STD in early, late and recovery phase
+-0.28653816575041735 +/- 0.42308243662527106
+0.5947693268334128 +/- 0.8821825331106719
+-0.03581341187299103 +/- 0.3736459513688664
+
+cuff mean std
+baseline       0.000000
+day 2         -0.073207
+day 4         -0.491152
+day 9          0.331208
+day 14         0.252269
+day 15         0.830570
+day 21         0.040559
+day 28         0.107002
+day 33         0.042172
+Unnamed: 11         NaN
+Unnamed: 12         NaN
+Unnamed: 13         NaN
+Unnamed: 14         NaN
+Unnamed: 15         NaN
+Unnamed: 16         NaN
+Unnamed: 17         NaN
+Unnamed: 18         NaN
+Unnamed: 19         NaN
+Unnamed: 20         NaN
+Unnamed: 21         NaN
+Unnamed: 22         NaN
+Unnamed: 23         NaN
+Unnamed: 24         NaN
+Unnamed: 25         NaN
+dtype: float64
+baseline       0.000000
+day 2          0.823261
+day 4          0.316897
+day 9          0.307341
+day 14         0.272806
+day 15         0.386436
+day 21         0.393913
+day 28         0.161847
+day 33         0.261878
+Unnamed: 11         NaN
+Unnamed: 12         NaN
+Unnamed: 13         NaN
+Unnamed: 14         NaN
+Unnamed: 15         NaN
+Unnamed: 16         NaN
+Unnamed: 17         NaN
+Unnamed: 18         NaN
+Unnamed: 19         NaN
+Unnamed: 20         NaN
+Unnamed: 21         NaN
+Unnamed: 22         NaN
+Unnamed: 23         NaN
+Unnamed: 24         NaN
+Unnamed: 25         NaN
+dtype: float64
+Avg +/- STD in early, late and recovery phase
+-0.362151611318235 +/- 0.4336653314905822
+1.2687228476945975 +/- 0.7626741719096439
+0.1483677428900259 +/- 0.3895016292239092
+
+NON PARAMETRIC TESTS
+Kruskal Wallis AUC ealry
+KruskalResult(statistic=3.1000000000000085, pvalue=0.21224797382674215)
+Post how MWU tests
+CTRL vs CTRL MWU stat=8.0 ;  p-val=0.4412100570377518
+CTRL vs SHAM MWU stat=9.0 ;  p-val=0.06878194695495164
+CTRL vs CUFF MWU stat=9.0 ;  p-val=0.06878194695495164
+SHAM vs CTRL MWU stat=9.0 ;  p-val=0.06878194695495164
+SHAM vs SHAM MWU stat=50.0 ;  p-val=0.4848680212100203
+SHAM vs CUFF MWU stat=43.0 ;  p-val=0.3115881119410587
+CUFF vs CTRL MWU stat=9.0 ;  p-val=0.06878194695495164
+CUFF vs SHAM MWU stat=43.0 ;  p-val=0.3115881119410587
+CUFF vs CUFF MWU stat=50.0 ;  p-val=0.4848680212100203
+
+Kruskal Wallis AUC late
+KruskalResult(statistic=7.718999999999994, pvalue=0.021078536156741916)
+Post hoc mwu
+CTRL vs CTRL MWU stat=8.0 ;  p-val=0.4412100570377518
+CTRL vs SHAM MWU stat=12.0 ;  p-val=0.14442218317324246
+CTRL vs CUFF MWU stat=3.0 ;  p-val=0.009812207488319853
+SHAM vs CTRL MWU stat=12.0 ;  p-val=0.14442218317324246
+SHAM vs SHAM MWU stat=50.0 ;  p-val=0.4848680212100203
+SHAM vs CUFF MWU stat=23.0 ;  p-val=0.022577284812139504
+CUFF vs CTRL MWU stat=3.0 ;  p-val=0.009812207488319853
+CUFF vs SHAM MWU stat=23.0 ;  p-val=0.022577284812139504
+CUFF vs CUFF MWU stat=50.0 ;  p-val=0.4848680212100203
+
+Kruskal Wallis AUC recovery
+KruskalResult(statistic=0.8799999999999955, pvalue=0.6440364210831429)
+Post hoc mwu
+CTRL vs CTRL MWU stat=8.0 ;  p-val=0.4412100570377518
+CTRL vs SHAM MWU stat=15.0 ;  p-val=0.26225914010653817
+CTRL vs CUFF MWU stat=19.0 ;  p-val=0.4718140111014917
+SHAM vs CTRL MWU stat=15.0 ;  p-val=0.26225914010653817
+SHAM vs SHAM MWU stat=50.0 ;  p-val=0.4848680212100203
+SHAM vs CUFF MWU stat=39.0 ;  p-val=0.21367765694890384
+CUFF vs CTRL MWU stat=19.0 ;  p-val=0.4718140111014917
+CUFF vs SHAM MWU stat=39.0 ;  p-val=0.21367765694890384
+CUFF vs CUFF MWU stat=50.0 ;  p-val=0.4848680212100203
+
+Levene test on AUC early
+LeveneResult(statistic=4.6991113522860894, pvalue=0.020577687818229957)
+
+Levene test on AUC late
+LeveneResult(statistic=0.3245353904523042, pvalue=0.7264242957873401)
+
+Levene test on RECOVERY
+LeveneResult(statistic=0.08533246207700465, pvalue=0.9185236877143725)
+
+Bartlett test on AUC early
+BartlettResult(statistic=3.7002973768685345, pvalue=0.157213788703593)
+
+PARAMETRIC TESTS
+Anova AUC ealry
+F_onewayResult(statistic=1.8426816929704513, pvalue=0.18309967992290815)
+Post how t test tests
+CTRL vs CTRL t test ind , stat= 0.0 ; p-val=1.0
+CTRL vs SHAM t test ind , stat= 1.702744491999398 ; p-val=0.11435343294009606
+CTRL vs CUFF t test ind , stat= 1.9802269103713244 ; p-val=0.07107526078790921
+SHAM vs CTRL t test ind , stat= -1.702744491999398 ; p-val=0.11435343294009606
+SHAM vs SHAM t test ind , stat= 0.0 ; p-val=1.0
+SHAM vs CUFF t test ind , stat= 0.3744114910010146 ; p-val=0.7124725704918244
+CUFF vs CTRL t test ind , stat= -1.9802269103713244 ; p-val=0.07107526078790921
+CUFF vs SHAM t test ind , stat= -0.3744114910010146 ; p-val=0.7124725704918244
+CUFF vs CUFF t test ind , stat= 0.0 ; p-val=1.0
+
+Anova AUC late
+F_onewayResult(statistic=3.343988342691853, pvalue=0.054858607373320045)
+Post hoc t test
+CTRL vs CTRL MWU stat=0.0, p-val=1.0
+CTRL vs SHAM MWU stat=-0.9815658636350243, p-val=0.3456899756203847
+CTRL vs CUFF MWU stat=-2.6770820010818737, p-val=0.020145315348750272
+SHAM vs CTRL MWU stat=0.9815658636350243, p-val=0.3456899756203847
+SHAM vs SHAM MWU stat=0.0, p-val=1.0
+SHAM vs CUFF MWU stat=-1.733783453129486, p-val=0.10005082036626381
+CUFF vs CTRL MWU stat=2.6770820010818737, p-val=0.020145315348750272
+CUFF vs SHAM MWU stat=1.733783453129486, p-val=0.10005082036626381
+CUFF vs CUFF MWU stat=0.0, p-val=1.0
+
+Anova AUC Recovery
+F_onewayResult(statistic=0.5390295420360967, pvalue=0.591171156724595)
+Post hoc t test
+CTRL vs CTRL MWU stat=0.0, p-val=1.0
+CTRL vs SHAM MWU stat=0.5312827010386272, p-val=0.6049177956362299
+CTRL vs CUFF MWU stat=-0.2533235382962628, p-val=0.80430607514936
+SHAM vs CTRL MWU stat=-0.5312827010386272, p-val=0.6049177956362299
+SHAM vs SHAM MWU stat=0.0, p-val=1.0
+SHAM vs CUFF MWU stat=-1.0237153056480734, p-val=0.3195319233926256
+CUFF vs CTRL MWU stat=0.2533235382962628, p-val=0.80430607514936
+CUFF vs SHAM MWU stat=1.0237153056480734, p-val=0.3195319233926256
+CUFF vs CUFF MWU stat=0.0, p-val=1.0
+[1] Accuracy on Synaptic params
+Sorted accuracy avg accuracy = 0.16127460317460318+/-0.0149296861641682
+Random accuracy avg accuracy = 0.16313439153439155+/-0.01590779060250831
+Both distributions are normal
+T-test random vs sorted cross validation | stat = -0.8482013068584182 ; p = 0.3973500859585505
+[2] Accuracy on Graph Properties
+
+accuracy_comparison_whole_graph_STR_LTR_combined_S8a.csv
+Sorted accuracy avg accuracy = 0.3687619047619047+/-0.09103167822197555
+Random accuracy avg accuracy = 0.15142857142857138+/-0.06952380952380952
+At least one of the distribution is not normal
+MWU random vs sorted cross validation | stat = 60411.0 ; p = 1.3412859891152372e-73
+
+accuracy_comparison_cross_prediction_downsampled_only_WT_development_bilateral_S8.csv
+Sorted accuracy avg accuracy = 0.7557333333333334+/-0.10479830363342933
+Random accuracy avg accuracy = 0.13386666666666663+/-0.08022014155504285
+At least one of the distribution is not normal
+MWU random vs sorted cross validation | stat = 62500.0 ; p = 1.9135677877621309e-84
+
+accuracy_comparison_zone_wise_STR_LTR_combined_S8a.csv
+Sorted accuracy avg accuracy = 0.24705882352941175+/-0.09411764705882351
+Random accuracy avg accuracy = 0.24676470588235289+/-0.09713855904829574
+At least one of the distribution is not normal
+MWU random vs sorted cross validation | stat = 20060.5 ; p = 0.9578334172390655
+
+accuracy_comparison_bilateral_separate-STR_LTR_Fig5.csv
+Sorted accuracy avg accuracy = 0.514+/-0.10287856919689348
+Random accuracy avg accuracy = 0.1822+/-0.07518749896093099
+At least one of the distribution is not normal
+MWU random vs sorted cross validation | stat = 62204.5 ; p = 1.755622330248988e-82
