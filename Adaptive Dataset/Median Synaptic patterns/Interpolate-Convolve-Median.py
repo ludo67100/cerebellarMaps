@@ -8,32 +8,16 @@ Computes median synaptic patterns (high resolution) for each behavioral conditio
 """
 
 #Define the groups
-groups = ['WT','ENR1','ENR2','LC','LS','EC','ES']
-colors = ['skyblue','lightgreen','green','lightcoral','black','orange','purple']
+groups = ['WT','ENR1','ENR2','EC','ES','LC','LS']
+newNomConditions = ['control','short training','long training','early cuff','early sham','adapted cuff','adapted sham']
+colors = ['skyblue','lightgreen','green','orange','purple','lightcoral','0.5']
 
 #Input folder - AMPLITUDE-----------------------------------------------------
-dataSource = 'D:/000_PAPER/Amplitude_Analysis/Sigma/00_MAPS'
+#dataSource = 'C:/Users/ludov/Documents/Spaeth_Bahuguna_et_al/ANALYSIS/DATASET/EPHYS/Adaptive_Dataset'
+dataSource = 'D:/03_FORMATED_DATA/For Paper/EPHYS/Adaptive_Dataset'
 
 #Savedir 
-saveDir = 'D:/000_PAPER/Amplitude_Analysis/Sigma'
-saveDir = 'D:/000_PAPER/Amplitude_Analysis/Sigma/13_Bootstrap'
-
-#Target file type
-fileType = 'Amp_2D_OK.csv'
-zscoreFileType = 'Amp_zscore_2D_OK.csv'
-positionFileType = 'Positions_cp_centered_OK.csv' 
-
-#
-###Input folder - CHARGE---------------------------------------------------------
-#dataSource = 'E:/000_PAPER/Charge_Analysis/Sigma'
-#
-##Savedir 
-#saveDir = 'E:/000_PAPER/Charge_Analysis/Sigma/01_MEDIAN'
-#
-##Target file type
-#fileType = 'Charge_2D_OK.csv'
-#zscoreFileType = 'Charge_zscore_2D_OK.csv'
-#positionFileType = 'Positions_cp_centered_OK.csv' 
+saveDir = 'D:/000_PAPER/00_ANSWER_TO_REVIEWERS/REVISION CODE/CODE/FIGURE 4/C'
 
 
 zscoreCut = 3.09
@@ -42,22 +26,47 @@ zscoreCut = 3.09
 sigma = 9
 
 #Range in %P1- for refiling and median analysis 
-mapRange = [-200,220]
+# mapRange = [-200,200]
+mapRange = [-200,200]
 
 #Do we save the data ?
 saveData = False
 
 #Display plot with raw, interpolated and convovled trace for each experiment (lots of plots)
-showPlot = False
+showPlot = True
 
 #Do we save the figure ?
 saveFig = False
+
+#Do we compile the individual patterns for later RF analysis ?
+compilePatternsForRF = False
 
 #Do we do boostrap on patterns ? Takes a few seconds more to compute
 do_bootstrap = False
 
 #Do we perform the stats ?
 statsToDo = True
+
+#Method for cumulative : 'median' or 'mean' 
+cumMethod = 'mean'
+
+#For average, use SD or SEM 
+averageSDorSEM = 'SD'
+
+#Replace non significant columns with 0 for cumulatives 
+replaceSilentColumnsWithZeros = False
+
+#Store the MADs for comparison 
+storeMad = []
+
+#Kwards for KS test
+ksMode = 'auto'
+ksAlt = 'two-sided'
+
+#Method for KS p values correction
+multiCorrMethod = 'holm'
+
+
 
 import matplotlib
 matplotlib.rcParams['pdf.fonttype'] = 42
@@ -67,6 +76,13 @@ import os
 import math 
 import scipy.stats as sp
 import pandas as pd 
+from scipy import stats
+import warnings
+from statsmodels.stats.multitest import multipletests as multi
+
+#Ignore nan-slice warnings
+warnings. filterwarnings(action='ignore')
+
 
 def deal_with_nans(x,y):
     '''
@@ -212,7 +228,7 @@ def column_activation(zscore, cutoff=1.96):
     profile = []
     for i in range(zscore.shape[1]):
         
-        count = round(float(len([x for x in zscore[:,i] if x >= cutoff])) / float(zscore.shape[0]), 3)
+        count = round(float(len([x for x in zscore[:,i] if x >= cutoff])) / float(zscore.shape[0]), 3)*100
         
         profile.append(count)
         
@@ -246,7 +262,7 @@ def SEM(data,axis=0):
     '''
     Returns Standard Error to the Mean for a given distribution
     '''
-    return np.nanstd(data,axis=axis)/np.sqrt(len(data))
+    return stats.sem(data, axis=axis, nan_policy='omit')
 
 def MAD(a,axis=None):
     '''
@@ -254,10 +270,11 @@ def MAD(a,axis=None):
     '''
     #Median along given axis but keep reduced axis so that result can still broadcast along a 
     
-    med = np.nanmedian(a, axis=axis, keepdims=True)
-    mad = np.nanmedian(np.abs(a-med),axis=axis) #MAD along the given axis
+    # med = np.nanmedian(a, axis=axis, keepdims=True)
+    # mad = np.nanmedian(np.abs(a-med),axis=axis) #MAD along the given axis
     
-    return mad 
+    # return mad 
+    return stats.median_abs_deviation(a,nan_policy='omit',axis=0)
 
 
 def bootstrap_patterns(patterns, run=10000, N=10, input_method='median', output_method='median'):
@@ -387,13 +404,35 @@ def shuffle_these_patterns(listOfPatterns):
 
 #-----------------------------------------------------------------------------------------------------------------    
 
+#Target file type
+fileType = 'Amp_2D_OK.csv'
+zscoreFileType = 'Amp_zscore_2D_OK.csv'
+positionFileType = 'Positions_cp_centered_OK.csv'
 
+print('------------------------------------------------------')
+print('-----------Map Range(%P1-)={}------------'.format(mapRange))
+print('------------------------------------------------------') 
 
 
 #FOR THE WHOLE MAP
 MEASURES,CONDITIONS = [],[]
 
-convolved_patterns = []
+#To store cumulative patterns 
+cumulativePatternsGlob, mapGlob, condGlob,PatternsGlob = [],[],[],[]
+
+#Lists for convolved patterns and zscores
+convolved_patterns, convolved_mads = [],[]
+convolved_median_amps, convolved_amps_mads = [],[]
+convolved_median_activation, convolved_activation_mads = [],[]
+
+#Lists for raw amplitude profiles - will be saved in a dedicated DF for later RF 
+rawAmpProfiles = []
+groupForAmpProfile = []
+nameForAmpProfile = []
+
+#List for cumulative distribution at x=0 and x=max
+x0Cumulatives, xMaxCumulatives = [],[]
+x0CumulativesActivation, xMaxCumulativesActivation = [],[]
 
 for group,index in zip(groups,range(len(groups))):
     print('Group = {}'.format(group))
@@ -407,6 +446,9 @@ for group,index in zip(groups,range(len(groups))):
     
     #For ENR1 and 2
     listOfExperiments = [x for x in os.listdir(inputDir)]
+    
+    #Store interquartiles range for each group 
+    interquartiles = []
 
     
     fig, ax = plt.subplots(1,2 ,figsize=(20,5))
@@ -415,17 +457,18 @@ for group,index in zip(groups,range(len(groups))):
     ax[0].set_xlabel('Mediolateral axis (%P1-)')
     ax[0].set_ylabel('Zscore')
     
-    ax[1].set_title('Group Data'.format(sigma))
+    ax[1].set_title('Group Data (sigma={})'.format(sigma))
     ax[1].set_xlabel('Mediolateral axis (%P1-)')
     ax[1].set_ylabel('Median Zscore')    
     
     ax[1].set_ylim(0,25)
        
-    allPositions, allPatterns = [],[]
+    allPositions, allPatterns, allAmplitudes = [],[],[]
     allPositionsActivation, allActivations = [],[]
     for manip,idx in zip(listOfExperiments,range(len(listOfExperiments))):
         
-        print(manip)
+        #print(manip)
+        mapGlob.append('{}_{}'.format(manip,newNomConditions[index])) 
 
         #Get amplitudes or charges
         measures = np.abs(np.genfromtxt('{}/{}/{}_{}'.format(inputDir,manip,manip,fileType),delimiter=','))
@@ -447,10 +490,47 @@ for group,index in zip(groups,range(len(groups))):
         convolveX,convolveY = Convolve(continuousY,x=continuousX,func='triangle',sigma=sigma,Range=(None,None))
         alignedx, alignedy = range_patterns(convolveX,convolveY,xrange=mapRange)
         
+        #Interpolate, convolve and align amplitudes
+        cleand_xAmp, cleaned_yAmp = deal_with_nans(positions,oneDpattern)
+        continuousXAmp, continuousYAmp = Create_Continuous_Y_Array(cleand_xAmp, cleaned_yAmp)
+        convolveXAmp,convolveYAmp = Convolve(continuousYAmp, x=continuousXAmp,func='triangle',sigma=sigma,Range=(None,None))
+        alignedxAmp, alignedyAmp = range_patterns(convolveXAmp,convolveYAmp,xrange=mapRange)
+        
+        #Interpolate, convolve and align column activation - Do not convolve
+        cleand_xActivation, cleaned_yActivation = deal_with_nans(positions,np.array(activation))
+        continuousXActivation, continuousYActivation = Create_Continuous_Y_Array(cleand_xActivation, cleaned_yActivation)
+        #convolveXActivation,convolveYActivation = Convolve(continuousYActivation, x=continuousXActivation,func='gaussian',sigma=sigma,Range=(None,None))
+        alignedxAactivation, alignedyAactivation = range_patterns(continuousXActivation,continuousYActivation,xrange=mapRange)
+
+        
+        if replaceSilentColumnsWithZeros==True: 
+            for i in range(len(alignedy)):
+                if alignedy[i] >= zscoreCut:
+                    alignedyAmp[i] = alignedyAmp[i]
+                else:
+                    alignedyAmp[i] = 0
+        else:
+            pass 
+        
         ax[0].plot(alignedx, alignedy,label=manip)
+            
 
         allPositions.append(alignedx)
         allPatterns.append(alignedy)
+        allAmplitudes.append(np.nancumsum(alignedyAmp))
+        allActivations.append(np.nancumsum(alignedyAactivation))
+        
+        #Store the cumulative amplitudes and zscore patterns 
+        cumulativePatternsGlob.append(alignedyAmp)
+        PatternsGlob.append(alignedy)
+        
+        
+        #Append amps in Df for RF and tSNE if maps are complete
+        if math.isnan(np.sum(oneDpattern))==False:
+            rawAmpProfiles.append(oneDpattern)
+            groupForAmpProfile.append(group)
+            nameForAmpProfile.append(manip)
+            
 
         if showPlot == True:
             #Do a figure
@@ -461,40 +541,81 @@ for group,index in zip(groups,range(len(groups))):
             plt.plot(cleand_x,cleaned_y,label='Raw',linestyle='solid')
             plt.plot(continuousX,continuousY,label='Interpolated',linestyle='dashed')
             plt.plot(convolveX,convolveY,label='Convolved (sigma={} microns)'.format(sigma),linestyle='solid')
-            plt.plot(alignedx,alignedy,label='Aligned'.format(sigma),linestyle='dashed')
+            plt.plot(alignedx,alignedy,label='Aligned (sigma={})'.format(sigma),linestyle='dashed')
             plt.legend(loc='best')
             
     
     xaxis = np.arange(mapRange[0],mapRange[1]+1,1)      
     
     #Export DataFramr with aligned, convolved patterns for further analysis 
-    
     if saveData == True:
         extDf = pd.DataFrame(allPatterns,columns=allPositions[0])
         extDf.to_excel('{}/{}_aligned_zscore_patterns.xlsx'.format(saveDir,group))
-    
+    else:
+        print('saveData == False, Df was not saved')
     
     #Median Zscore
-    medianZscore = np.nanmedian(allPatterns,axis=0)
-    MaD = MAD(allPatterns,axis=0)
+    # medianZscore = np.nanmedian(allPatterns,axis=0)
+    # MaD = MAD(allPatterns,axis=0)
+    
+    medianZscore = np.nanmean(allPatterns,axis=0)
+    MaD = np.nanstd(allPatterns,axis=0)
+    
+    #Get cumulative distributions x0 and xMax
+    #x0Cumulatives.append(np.array(allAmplitudes)[:,int(len(medianZscore)/2.)]/1000.)
+    xMaxCumulatives.append(np.array(allAmplitudes)[:,-1]/1000.)
+    
+    x0CumulativesActivation.append(np.array(allActivations)[:,int(len(medianZscore)/2.)])
+    xMaxCumulativesActivation.append(np.array(allActivations)[:,-1])
+    
+    if cumMethod == 'median':
+        medianAmplitude = np.nanmedian(allAmplitudes, axis=0)
+        MaDamps = MAD(allAmplitudes, axis=0)
+        storeMad.append(MaDamps)
+        medianActivation = np.nanmedian(allActivations,axis=0)
+        MaDactivation = MAD(allActivations,axis=0)
+        errorMethod = 'MAD'
+    else:
+        medianAmplitude = np.nanmean(allAmplitudes, axis=0)
+
+        medianActivation = np.nanmean(allActivations,axis=0)
+        
+        if averageSDorSEM == 'SEM':
+            MaDamps = SEM(allAmplitudes, axis=0)
+            storeMad.append(MaDamps)
+            MaDactivation = SEM(allActivations,axis=0)
+            errorMethod = 'SEM'
+        else:
+            MaDamps = np.nanstd(allAmplitudes, axis=0)
+            storeMad.append(MaDamps)
+            MaDactivation = np.nanstd(allActivations,axis=0)
+            errorMethod = 'SD'
 
     ax[1].fill_between(xaxis,0,medianZscore+MaD,color='0.8',label='MAD')
     ax[1].fill_between(xaxis,0,medianZscore,color='0.2',label='ns')
     ax[1].fill_between(xaxis,zscoreCut,medianZscore,where=medianZscore>=zscoreCut,color=colors[index],interpolate=True,label='connected')
     
     convolved_patterns.append(medianZscore)
+    convolved_mads.append(MaD)
+    
+    convolved_median_amps.append(medianAmplitude/1000.) #in nA instead of pA - easier for cumulative
+       
+    convolved_amps_mads.append(MaDamps/1000.) #in nA instead of pA - easier for cumulative
+
+    convolved_median_activation.append(medianActivation)
+    convolved_activation_mads.append(MaDactivation)
     
     if do_bootstrap == True:
     
         #Bootstrap
-        zeBootsrap, deviation = bootstrap_patterns(allPatterns,run=10000, N=len(allPositions),input_method='median', output_method='median')
+        zeBootsrap, deviation = bootstrap_patterns(allPatterns,run=10000, N=len(allPositions),input_method='average', output_method='average')
         
         zeBootsrap = smooth_curve(zeBootsrap, 21,3)
         
-        shuffledPatterns = shuffle_these_patterns(allPatterns)
+        #shuffledPatterns = shuffle_these_patterns(allPatterns)
         
-        shuffleBootstrap, shuffleDeviation = bootstrap_patterns_random(shuffledPatterns,
-                                                                       run=10000, N=len(allPositions),input_method='median', output_method='median')
+        shuffleBootstrap, shuffleDeviation = bootstrap_patterns_random(allPatterns,
+                                                                       run=10000, N=len(allPositions),input_method='average', output_method='average')
         
         shuffleBootstrap = smooth_curve(shuffleBootstrap,21,3)
         
@@ -506,12 +627,6 @@ for group,index in zip(groups,range(len(groups))):
         ax[1].fill_between(xaxis, shuffleBootstrap-shuffleDeviation, shuffleBootstrap+shuffleDeviation, alpha=0.2,color='blue',label='Shuffle SD')
         
     
-    #    #Plot bootstrap filled way
-    #    ax[1].fill_between(xaxis,0,zeBootsrap+deviation,color='0.8',label='SD')
-    #    ax[1].fill_between(xaxis,0,zeBootsrap,color='0.2',label='ns')
-    #    ax[1].fill_between(xaxis,zscoreCut,zeBootsrap,where=zeBootsrap>=zscoreCut,color=colors[index],interpolate=True,label='connected')
-
-
     #Zscore limit
     zscoreLine = np.ones(len(xaxis))*zscoreCut
     ax[1].plot(xaxis, zscoreLine, linestyle='--', color='black', label='Threshold')
@@ -542,21 +657,181 @@ for group,index in zip(groups,range(len(groups))):
         plt.hist(draws, bins=100, width=0.8,color=colors[index])
         plt.xlabel('Pattern Index (#)')
         plt.ylabel('Amount of draws')
-        plt.savefig('{}/{}_PatternDraw.pdf'.format(saveDir, group))
+        if saveFig==True:
+            plt.savefig('{}/{}_PatternDraw.pdf'.format(saveDir, group))
 
-
+#Cumulative amplitudes_________________________________________________________
 if statsToDo == True:
+    print('')
+    print('--------{} Amplitude Patterns Comparison---------'.format(cumMethod))
+    print('KS 2samp test - mode={} - alternative={}'.format(ksMode,ksAlt))
+
+    #Figure for the cumulatives
+    cumFig, cumAx = plt.subplots(1,len(groups),sharex=True,sharey=True,figsize=(16,4))
+    cumAx[0].set_ylabel('{} cumulative Amplitude (nA+/-{})'.format(cumMethod,errorMethod))
+    
+    #Figure for cumulative comparison
+    cumCompareFig, cumCompareAx = plt.subplots(1,1)
+    cumCompareAx.set_ylabel('Cumulative[i]/Cumulative[CTRL]')
+    cumCompareAx.set_xlabel('Distance (%P1-)')
+
+    
+        
+    risePlot, riseAx = plt.subplots(1,1,sharex=True,sharey=True)
+    riseAx.set_ylabel('cumulative Amplitude (nA +/-{})'.format(errorMethod))
+
     
     assert groups[0] == 'WT', 'the ref pattern for ks test is not the CTRL pattern'
-    ref_median_pattern = convolved_patterns[0]
+    ref_median_pattern = convolved_median_amps[0]
     
-    for med, group in zip(convolved_patterns,groups):
+    ks_pvalues = []
+    for med, mad, group, i in zip(convolved_median_amps,convolved_amps_mads,groups,range(len(groups))):
         
-        ks_test = sp.ks_2samp(ref_median_pattern,med)
-        print('KS test WT vs {} p val = {}'.format(group, ks_test[1]))
+        ks_test = sp.ks_2samp(ref_median_pattern,med,mode=ksMode,alternative=ksAlt)
+        print('    KS test WT vs {} stat = {}'.format(group,ks_test[0]))
+        print('    KS test WT vs {} p val = {}'.format(group, ks_test[1]))
+                
+        ks_pvalues.append(ks_test[1])
 
+        cumAx[i].plot(xaxis,convolved_median_amps[0],color=colors[0],label=groups[0])
+        cumAx[i].fill_between(xaxis,convolved_median_amps[0]+convolved_amps_mads[0],convolved_median_amps[0]-convolved_amps_mads[0],color=colors[0],alpha=.2)
+        
+        cumCompareAx.plot(xaxis,convolved_median_amps[i]/convolved_median_amps[0],color=colors[i],label=groups[i])
+        cumCompareAx.legend(loc='best')
+        
+        cumAx[i].plot(xaxis,med,color=colors[i],label=groups[i])
+        cumAx[i].fill_between(xaxis,med+mad,med-mad,color=colors[i],alpha=.2)
+
+  
+        cumAx[i].set_xlabel('Distance (%P1-)')
+        cumAx[i].legend(loc='best')
+        
+        maxRiseAmp = med[-1] 
+        maxRiseMad = mad[-1]
+        
+        #Get values at x=0
+        # x0 = [x for x, y in zip(range(len(xaxis)), xaxis) if y == 0][0]
+        # midRiseAmp = med[x0]
+        # midRiseMad = mad[x0]
+
+        #print('        at x=0. {} Cumulative Amplitude in {} (nA+/-{})= {}+/-{}'.format(cumMethod,group,errorMethod,round(midRiseAmp,2),round(midRiseMad,2)))
+        
+        print('        Max. {} Cumulative Amplitude in {} (nA+/-{})= {}+/-{}'.format(cumMethod,group,errorMethod,round(maxRiseAmp,2),round(maxRiseMad,2)))
+        print('')
+        #box50 = riseAx[0].boxplot(x0Cumulatives,vert=False,patch_artist=True,showmeans=True)
+        box100 = riseAx.boxplot(xMaxCumulatives,vert=True,patch_artist=True,showmeans=True)
+    
+    #Apply multitest corrections on KS p values
+    checkKSpval = multi(ks_pvalues,alpha=0.05, method=multiCorrMethod, is_sorted=False)
+    print('Correction for multiple KS comparison')
+    print(checkKSpval)
+    
+    for p in range(len(checkKSpval[1])):
+        print ('Corrected ({}) p-value for WT vs {} (KS)= {:.4g}'.format(multiCorrMethod,groups[p],checkKSpval[1][p]))
+        cumAx[p].set_title('p={:.3g}'.format(checkKSpval[1][p]))   
+    
+    #Apply colors to boxplots
+    for patch100, color in zip(box100['boxes'],colors):
+        patch100.set_facecolor(color)
         
         
+    #Test xMaxCumulative distributions--------------------------------------------
+    kruskalMax = stats.kruskal(xMaxCumulatives[0],
+                               xMaxCumulatives[1],
+                               xMaxCumulatives[2],
+                               xMaxCumulatives[3],
+                               xMaxCumulatives[4],
+                               xMaxCumulatives[5])
+    
+    print('--- Comparison on x=Max ---') 
+    print(kruskalMax)
+    riseAx.set_title('Distributions at x=max - p(KW)={:.4g}'.format(kruskalMax[1]))
+
+    print ('    Post Hoc MWU/T test on CTRL vs conditions')
+    for k in range(len(xMaxCumulatives)):
         
+        normality = stats.shapiro(xMaxCumulatives[k])
+        if normality[1] < 0.05: 
+            print('{} distribution does not fit normality'.format(groups[k]))
+        else:
+            print ('{} distribution follows normality'.format(groups[k]))
+            
+        if stats.shapiro(xMaxCumulatives[0])[1] >= 0.05:
+            
+            if stats.shapiro(xMaxCumulatives[k])[1] >=0.05:
+                postHocTtest = stats.ttest_ind(xMaxCumulatives[0],xMaxCumulatives[k])
+                print ('    {} group vs {} group (t test)'.format(groups[0],groups[k]))
+                print ('    {}'.format(postHocTtest))
+                print ('')
+                
+            else:
+                postHocMwu = stats.mannwhitneyu(xMaxCumulatives[0],xMaxCumulatives[k])
+                
+                print ('    {} group vs {} group (MWU)'.format(groups[0],groups[k]))
+                print ('    {}'.format(postHocMwu))
+                print ('')
+        else:
+            postHocMwu = stats.mannwhitneyu(xMaxCumulatives[0],xMaxCumulatives[k])
+            
+            print ('    {} group vs {} group (MWU)'.format(groups[0],groups[k]))
+            print ('    {}'.format(postHocMwu))
+            print ('')
+            
+
+if compilePatternsForRF == True:
+    #-------------Compile DataFrames for later RF analysis------------
+    #One DF with sorted labels, then another with shuffled labels 
+    rawAmpProfilesDf = pd.DataFrame(rawAmpProfiles)
+    rawAmpProfilesDf['Condition'] = groupForAmpProfile
+    rawAmpProfilesDf['name'] = nameForAmpProfile
+    rawAmpProfilesDf.to_excel('{}/RawAmpProfilesForRandomForest_SORTED_LABELS.xlsx'.format(saveDir))
+            
+            
+    import random 
+    #Fix the see
+    random.seed(4)
+    rawAmpProfilesDfShuffle = pd.DataFrame(rawAmpProfiles)
+    rawAmpProfilesDfShuffle['Condition'] = random.sample(groupForAmpProfile,len(groupForAmpProfile))
+    rawAmpProfilesDfShuffle['name'] = random.sample(nameForAmpProfile,len(nameForAmpProfile))
+    rawAmpProfilesDfShuffle.to_excel('{}/RawAmpProfilesForRandomForest_RANDOM_LABELS.xlsx'.format(saveDir))
+    
+    
+#Save the dataframes -----------------------------------------------------------
+
+cumulativeGlobDf = pd.DataFrame(data=cumulativePatternsGlob,index=mapGlob).T
+cumulativeGlobDf.to_excel('{}/Cumulative_Amplitude_Patterns.xlsx'.format(saveDir))
+patternsDf = pd.DataFrame(data=PatternsGlob, index=mapGlob,columns=xaxis).T
+patternsDf.to_excel('{}/Aligned_Zscore_Patterns.xlsx'.format(saveDir))
+
+
+
+#------------------Compared each condition early vs adapted ------------------------
+groups = ['WT','ENR1','ENR2','EC','ES','LC','LS']
+
+#Early vs adapted Cuff
+earlyCuffCum = convolved_median_amps[3]
+adaptedCuffCum = convolved_median_amps[5]
+
+adaptedVsEarlyCuff = sp.ks_2samp(earlyCuffCum,adaptedCuffCum,mode=ksMode,alternative=ksAlt)
+print('Early cuff vs adapted cuff comparison (KS, mode={}, alt={}) = {}'.format(ksMode, ksAlt,adaptedVsEarlyCuff))
+print()
+
+#Early vs adapted Sham
+earlyShamCum = convolved_median_amps[4]
+adaptedShamCum = convolved_median_amps[6]
+
+adaptedVsEarlySham = sp.ks_2samp(earlyShamCum,adaptedShamCum,mode=ksMode,alternative=ksAlt)
+print('Early sham vs adapted sham comparison (KS, mode={}, alt={}) = {}'.format(ksMode, ksAlt,adaptedVsEarlySham))
+print()
+
+#short vs long train
+shortTrainCum = convolved_median_amps[1]
+longTrainCum = convolved_median_amps[2]
+
+shortVsLongTraining = sp.ks_2samp(shortTrainCum,longTrainCum,mode=ksMode,alternative=ksAlt)
+print('short vs long training comparison (KS, mode={}, alt={}) = {}'.format(ksMode, ksAlt,shortVsLongTraining))
+print()
+
+
         
      
