@@ -1,22 +1,23 @@
 # cerebellarMaps
-Python-based scripts used for data analysis in "Cerebellar Connectivity Maps Embody Adaptive Behavior" by L.Spaeth, J.Bahuguna et al. 
+Python-based scripts used for data analysis in "Cerebellar Connectivity Maps Embody Adaptive Behavior in Mice" by L.Spaeth, J.Bahuguna et al. 
 
 # Requirements 
 Each script was tested and built with an IPython console from Spyder (python 3.6 or later). Anaconda and WinPython distributions were tested in the present study. Please install the following packages in your environnement:
--matplotlib
--numpy
--pingouin
--pandas
--seaborn
--statannot
--scipy
--statsmodels
--sklearn
--bct
+-matplotlib 3.4
+-numpy 1.19
+-pingouin 0.5
+-pandas 1.3
+-seaborn 0.11
+-statannot 
+-scipy 1.6
+-statsmodels 0.12
+-sklearn 0.24
+-neo 0.10
+-bctpy 0.5.2
 -snakemake
 
 # Dataset
-The complete dataset is available upon request to the authors. It contains pre-processed synaptic maps, balance profiles and locomotor performances in the running wheel. 
+Ludovic Spaeth, Jyotika Bahuguna, Demian Battaglia, & Philippe Isope. (2021). GC-PC_Cerebellar_Connectivity _Maps [Data set]. Zenodo. https://doi.org/10.5281/zenodo.5714670
 
 # Scripts
 Scripts are sorted according to the output panels from each figures in the paper.
