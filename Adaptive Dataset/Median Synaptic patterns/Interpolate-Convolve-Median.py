@@ -15,9 +15,11 @@ colors = ['skyblue','lightgreen','green','orange','purple','lightcoral','0.5']
 #Input folder - AMPLITUDE-----------------------------------------------------
 #dataSource = 'C:/Users/ludov/Documents/Spaeth_Bahuguna_et_al/ANALYSIS/DATASET/EPHYS/Adaptive_Dataset'
 dataSource = 'D:/03_FORMATED_DATA/For Paper/EPHYS/Adaptive_Dataset'
+#dataSource = './For Paper/EPHYS/Adaptive_Dataset'
 
 #Savedir 
 saveDir = 'D:/000_PAPER/00_ANSWER_TO_REVIEWERS/REVISION CODE/CODE/FIGURE 4/C'
+#saveDir = './data/'
 
 
 zscoreCut = 3.09

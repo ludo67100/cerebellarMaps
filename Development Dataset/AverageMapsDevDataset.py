@@ -26,12 +26,16 @@ sheets=['P9P10','P12P13','P14P18','P30P40']
 
 #General directory to find the data
 inputDir = 'D:/03_FORMATED_DATA/For Paper/EPHYS/Development_Dataset'
+#inputDir = './For Paper/EPHYS/Development_Dataset'
 
 #Where to save datas/figures
 outputDir = 'D:/000_PAPER/00_ANSWER_TO_REVIEWERS/REVISION CODE/00_FINAL_CODE/Figure2/2D/Average Maps'
+#outputDir = './data/'
+#figDir = './figs/'
 
 #Zebrin file
 zebrinFile = 'D:/03_FORMATED_DATA/For Paper/EPHYS/Mesures_ZII_LowRes_Adult_and_Dev.xlsx'
+#zebrinFile = './For Paper/EPHYS/Mesures_ZII_LowRes_Adult_and_Dev.xlsx'
 
 #To constrict 1D plots
 ylim = 20
@@ -205,7 +209,9 @@ for condition,sheet,i in zip(conditions,sheets,range(len(conditions))):
 
     if saveFig == True:
         plt.savefig('{}/{}_2D_raw_sorting.pdf'.format(outputDir,condition)) 
-        plt.savefig('{}/{}_2D_raw_sorting.png'.format(outputDir,condition))         
+        plt.savefig('{}/{}_2D_raw_sorting.png'.format(outputDir,condition)) 
+        #plt.savefig('{}/{}_2D_raw_sorting.pdf'.format(figDir,condition)) 
+        #plt.savefig('{}/{}_2D_raw_sorting.png'.format(figDir,condition))         
 
 
     fig, ax = plt.subplots(2,1,figsize=(14,5))

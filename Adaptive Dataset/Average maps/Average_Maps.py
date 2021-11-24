@@ -28,12 +28,15 @@ sheets=['WT','ENR','ENR','EC','ES','LC','LS']
 
 #General directory to find the data
 inputDir = 'D:/03_FORMATED_DATA/For Paper/EPHYS/Adaptive_Dataset'
+#inputDir = './For Paper/EPHYS/Adaptive_Dataset'
 
 #Where to save datas/figures
+#outputPath = 'D:/000_PAPER/00_ANSWER_TO_REVIEWERS/LTP-LTD question/code output'
 outputPath = 'D:/000_PAPER/00_ANSWER_TO_REVIEWERS/LTP-LTD question/code output'
-
+#outputPath = './data/'
 #Zebrin file
 zebrinFile = 'D:/03_FORMATED_DATA/For Paper/EPHYS/Mesures_ZII_HighRes_WT_ENR_EC_LC_ES_LS.xlsx'
+#zebrinFile = './For Paper/EPHYS/Mesures_ZII_HighRes_WT_ENR_EC_LC_ES_LS.xlsx'
 
 #To constrict 1D plots
 ylim = 20

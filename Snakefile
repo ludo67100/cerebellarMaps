@@ -9,7 +9,7 @@ SUBTYPES = ["EC","ENR1","ENR2","ES","LC","LS","WT"]
 DEVELOPMENT =["P9P10","P12P13","P14P18","P30P40"]
 OPTIONS = ["n","y"]
 POSTFIX = ["","_sub_ipsi_contra"]
-
+INPUT_DIR = "./For\ Paper/"
 
 Fig2_panel_name = dict({"modularity_index":"H","participation_pos":"I","module_degree_zscore":"J","local_assortativity_pos_whole":"K"})
 
@@ -65,7 +65,16 @@ rule all:
 		DATA_TARGET_DIR+"Predicted_actual_scatter_points_lcls_auc_early_n.csv",
 		FIG_TARGET_DIR+"/lcls_auc_early/"+"Predicted_actual_scatter_jittered_auc_early_n.png",
 		DATA_TARGET_DIR+"Predicted_actual_scatter_points_lcls_post_op15_n.csv",
-		FIG_TARGET_DIR+"/lcls_post_op15/"+"Predicted_actual_scatter_jittered_post_op15_n.png"	
+		FIG_TARGET_DIR+"/lcls_post_op15/"+"Predicted_actual_scatter_jittered_post_op15_n.png",
+		
+		#DATA_TARGET_DIR+"Aligned_Zscore_Patterns.xlsx",
+		#DATA_TARGET_DIR+"Cumulative_Amplitude_Patterns.xlsx",
+
+		#expand(FIG_TARGET_DIR+"{devel}_2D_MedianZscore_and_AvgAmplitude.pdf",devel=DEVELOPMENT),
+		#expand(DATA_TARGET_DIR+"{devel}_2D_MedianZscore.csv",devel=DEVELOPMENT),
+		#expand(DATA_TARGET_DIR+"{devel}_2D_AvgAmplitude.csv",devel=DEVELOPMENT),
+		#expand(DATA_TARGET_DIR+"{devel}_POSITIONAL_ARRAY.csv",devel=DEVELOPMENT),
+
 
 
 
@@ -201,6 +210,7 @@ rule Figure2_panelK:
 
 rule read_data_behavior:
 	input:
+		#"For Paper/BEHAVIOR/BALANCE/Catwalk_Norm_Profiles_Cuff_Sham_Ctrl.xlsx",
 		"For Paper/BEHAVIOR/BALANCE/Catwalk_Norm_Profiles_Cuff_Sham_Ctrl.xlsx",
 		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_all.csv",
 		DATA_TARGET_DIR+"graph_properties_pandas_for_behav_sub_contra_ipsi_all.csv"
@@ -282,4 +292,22 @@ rule Figure6_PanelD:
 	run:
 		shell("python Figure\ 6/Figure6_PanelD.py")
 
+#rule Interpolate_Convolve_Median:
+#	input:
+#		"For Paper/EPHYS/Adaptive_Dataset/",
+#	output:
+#		DATA_TARGET_DIR+"Aligned_Zscore_Patterns.xlsx",
+#		DATA_TARGET_DIR+"Cumulative_Amplitude_Patterns.xlsx",
+#	run:
+#		shell("python Adaptive\ Dataset/Median\ Synaptic\ patterns/Interpolate-Convolve-Median.py")
 
+#rule AverageMapsDevDataset:
+#	input:
+#		INPUT_DIR+"EPHYS/Mesures_ZII_LowRes_Adult_and_Dev.xlsx"
+#	output:
+#		expand(FIG_TARGET_DIR+"{devel}_2D_MedianZscore_and_AvgAmplitude.pdf",devel=DEVELOPMENT),
+#		expand(DATA_TARGET_DIR+"{devel}_2D_MedianZscore.csv",devel=DEVELOPMENT),
+#		expand(DATA_TARGET_DIR+"{devel}_2D_AvgAmplitude.csv",devel=DEVELOPMENT),
+#		expand(DATA_TARGET_DIR+"{devel}_POSITIONAL_ARRAY.csv",devel=DEVELOPMENT),
+#	run:
+#		shell("python Development\ Dataset/AverageMapsDevDataset.py")		

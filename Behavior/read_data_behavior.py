@@ -32,6 +32,7 @@ else:
 
 
 behavior_features = pd.DataFrame(columns=["baseline","auc_early","auc_late","auc_global","post_op2","post_op2_rel","post_op33", "post_op33_rel", "tot_auc_pos", "tot_auc_neg","ratio_auc_pos_neg","num_switches","time_to_peak_wrt_post_op2","time_to_peak_wrt_baseline", "pos_neg_switch_slope","neg_pos_switch_slope","post_op14","post_op15","variance","names","subtype"])
+#behavior_features = pd.DataFrame(columns=["baseline","auc_early","auc_late","auc_global","post_op2","post_op2_rel","post_op33", "post_op33_rel", "post_op14","post_op15","variance","names","subtype"])
 temp_behav = dict()
 
 y_features = list(behavior_features.keys())
@@ -40,13 +41,16 @@ for k in y_features:
     temp_behav[k] = []
                                                                                                                  
 behavior_catwalk = pd.read_excel(data_dir+"/"+"Catwalk_Raw_Profiles_Cuff_Sham_Ctrl.xlsx")
-
+#behavior_catwalk = pd.read_excel(data_dir+"/"+"Catwalk_Norm_Profiles_Cuff_Sham_Ctrl.xlsx")
+#behavior_catwalk = behavior_catwalk.rename(columns={'Unnamed: 0':'mouse'})
 behavior_catwalk = behavior_catwalk[~behavior_catwalk.mouse.str.contains("WT")] 
 
 
 #behavior_catwalk = behavior_catwalk.rename(columns={'Unnamed: 0':'mouse'})
 animals_names = [x.split('_')[1] if "WT" not in x else x[-1] for x in list(behavior_catwalk["mouse"]) ]
+#animals_names = [x for x in list(behavior_catwalk["mouse"]) ]
 temp_subtypes = [x.split('_')[0] if "WT" not in x else "WT" for x in list(behavior_catwalk["mouse"]) ]
+#temp_subtypes = ['LC' if "CUFF" in x else "LS" for x in list(behavior_catwalk["Condition"]) ]
 
 print(animals_names)
 print(temp_subtypes)
@@ -74,9 +78,11 @@ neg_pos_switch_slope_all = np.zeros((len(graph_prop_df),1))
 ff_all = np.zeros((len(graph_prop_df),1))
 
 graph_names_short = [ x.split('-')[0] if len(x.split('-')) <= 2 else x.split('-')[0]+"-"+x.split('-')[1] for x in graph_prop_df["names"]]
+#graph_names_short =animals_names 
 
 for i,an in enumerate(animals_names):
     catwalk_mouse = behavior_catwalk[behavior_catwalk["mouse"].str.contains(an)]
+    #catwalk_mouse = behavior_catwalk[behavior_catwalk["mouse"] == an]
     baseline = np.array(catwalk_mouse["baseline"])
     auc_early = np.sum(np.array((catwalk_mouse[catwalk_mouse.keys()[2:4]]))) # algebraic value with sign
     auc_late = np.sum(np.array((catwalk_mouse[catwalk_mouse.keys()[4:8]])))
@@ -89,7 +95,7 @@ for i,an in enumerate(animals_names):
     post_op15 = np.unique(catwalk_mouse["post_op_15"]) # Absolute postop14
 
     ff = np.var(np.array(catwalk_mouse[catwalk_mouse.keys()[2:8]]))
-
+    
     tot_pos_auc = np.sum(np.array(catwalk_mouse[catwalk_mouse.keys()[1:-1]])[np.array(catwalk_mouse[catwalk_mouse.keys()[1:-1]])>0])
     tot_neg_auc = np.sum(np.array(catwalk_mouse[catwalk_mouse.keys()[1:-1]])[np.array(catwalk_mouse[catwalk_mouse.keys()[1:-1]])<0])
     ratio_pos_neg_auc = np.abs(tot_pos_auc/tot_neg_auc)
@@ -117,7 +123,7 @@ for i,an in enumerate(animals_names):
     slopes = np.array([ np.array(catwalk_mouse)[0][2:][i+1] - np.array(catwalk_mouse)[0][2:][i]    for i in np.where(traj[:-1]*traj[1:]<0)[0] if i < len(np.array(catwalk_mouse)[0][1:])])
     neg_pos_slope = [ np.max(slopes[slopes>0]) if len(slopes[slopes>0]) > 0 else 0][0]
     pos_neg_slope = [ np.min(slopes[slopes<0]) if len(slopes[slopes<0]) > 0 else 0][0]
-
+    
      
     ind = np.where(np.array(graph_names_short)==an)[0]
     baseline_all[ind] = baseline
@@ -128,6 +134,7 @@ for i,an in enumerate(animals_names):
     post_op2_rel_all[ind] = post_op2_rel
     post_op33_all[ind] = post_op33
     post_op33_rel_all[ind] = post_op33_rel
+    
     tot_pos_auc_all[ind] = tot_pos_auc
     tot_neg_auc_all[ind] = tot_neg_auc
     ratio_pos_neg_auc_all[ind] = ratio_pos_neg_auc
@@ -137,6 +144,7 @@ for i,an in enumerate(animals_names):
 
     neg_pos_switch_slope_all[ind] = neg_pos_slope
     pos_neg_switch_slope_all[ind] = pos_neg_slope
+    
     post_op14_all[ind] = post_op14
     post_op15_all[ind] = post_op15
     ff_all[ind] = ff
@@ -152,6 +160,7 @@ for i,an in enumerate(animals_names):
     temp_behav["post_op2_rel"].append(post_op2_rel[0])
     temp_behav["post_op33"].append(post_op33[0])
     temp_behav["post_op33_rel"].append(post_op33_rel[0])
+    
     temp_behav["tot_auc_pos"].append(tot_pos_auc)
     temp_behav["tot_auc_neg"].append(tot_neg_auc)
     temp_behav["time_to_peak_wrt_post_op2"].append(time_to_peak)
@@ -160,6 +169,7 @@ for i,an in enumerate(animals_names):
     temp_behav["neg_pos_switch_slope"].append(neg_pos_slope)
     temp_behav["pos_neg_switch_slope"].append(pos_neg_slope)
     temp_behav["num_switches"].append(num_switches)
+    
     temp_behav["variance"].append(ff)
     temp_behav["subtype"].append(temp_subtypes[i])
 
@@ -177,6 +187,7 @@ graph_prop_df["post_op15"] = post_op15_all
 graph_prop_df["post_op2_rel"] = post_op2_rel_all
 graph_prop_df["post_op33"] = post_op33_all
 graph_prop_df["post_op33_rel"] = post_op33_rel_all
+'''
 graph_prop_df["tot_auc_pos"] = tot_pos_auc_all
 graph_prop_df["tot_auc_neg"] = tot_neg_auc_all
 graph_prop_df["ratio_auc_pos_neg"] = ratio_pos_neg_auc_all
@@ -186,6 +197,7 @@ graph_prop_df["neg_pos_switch_slope"] = neg_pos_switch_slope_all
 graph_prop_df["pos_neg_switch_slope"] = pos_neg_switch_slope_all
 
 graph_prop_df["num_switches"] = num_switches_all
+'''
 graph_prop_df["variance"] = ff_all
 
 for k in list(behavior_features.keys()):

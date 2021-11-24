@@ -41,14 +41,14 @@ import pandas as pd
 #--------------CHECK ALL THESE INFO BEFORE RUNNING----------------------------- 
 #------------------------------------------------------------------------------
 #The folder containing the raw data (condition)
-datadir = '_Adaptive_Dataset/LC'
+datadir = './Adaptive_Dataset/LC'
 
 #Where to save the plots and data
 savedir = ''
 
 #Measure and info file from dataset
-measureFile = '_/Spaeth_Bahuguna_et_al_Measures_Zebrin_Adaptive_HighResDataset.xlsx'
-infoFile = '_/Spaeth_Bahuguna_et_al_GCPC_Mappings_Adaptive_High_Res_Info.xlsx'
+measureFile = './For\ Paper/Spaeth_Bahuguna_et_al_Measures_Zebrin_Adaptive_HighResDataset.xlsx'
+infoFile = './For\ Paper/Spaeth_Bahuguna_et_al_GCPC_Mappings_Adaptive_High_Res_Info.xlsx'
 
 NAMES = ['050318-D2(1)','050318-D2(2)','050318-D2(3)',
         '060318-D1(2)',

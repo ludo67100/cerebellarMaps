@@ -14,7 +14,8 @@ Each script was tested and built with an IPython console from Spyder (python 3.6
 -sklearn
 -bct
 -snakemake
-
+-neo
+-openpyxl
 # Dataset
 The complete dataset is available upon request to the authors. It contains pre-processed synaptic maps, balance profiles and locomotor performances in the running wheel. 
 
