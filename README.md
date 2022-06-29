@@ -1,5 +1,5 @@
 # cerebellarMaps
-Python-based scripts used for data analysis in "Cerebellar Connectivity Maps Embody Adaptive Behavior in Mice" by L.Spaeth, J.Bahuguna et al. 
+Python-based scripts used for data analysis in L., Bahuguna, J., Gagneux, T. et al. Cerebellar connectivity maps embody individual adaptive behavior in mice. Nat Commun 13, 580 (2022). https://doi.org/10.1038/s41467-022-27984-8
 
 # Requirements 
 Each script was tested and built with an IPython console from Spyder (python 3.6 or later). Anaconda and WinPython distributions were tested in the present study. Please install the following packages in your environnement:
