@@ -3,6 +3,7 @@ Python-based scripts used for data analysis in L., Bahuguna, J., Gagneux, T. et 
 
 # Requirements 
 Each script was tested and built with an IPython console from Spyder (python 3.6 or later). Anaconda and WinPython distributions were tested in the present study. Please install the following packages in your environnement:
+```
 -matplotlib 3.4
 -numpy 1.19
 -pingouin 0.5
@@ -17,6 +18,8 @@ Each script was tested and built with an IPython console from Spyder (python 3.6
 -snakemake
 -neo
 -openpyxl
+```
+
 # Dataset
 Ludovic Spaeth, Jyotika Bahuguna, Demian Battaglia, & Philippe Isope. (2021). GC-PC_Cerebellar_Connectivity _Maps [Data set]. Zenodo. https://doi.org/10.5281/zenodo.5714670
 
